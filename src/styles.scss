@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+//font family goes here
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap');
+// Step 1: Design tokens
+@import 'styles/variables';
+
+// Step 2: Bootstrap 5 partials (tree-shakuse 'bootstrap/scss/functions';
+// @use 'bootstrap/scss/variables';
+// @use 'bootstrap/scss/mixins';
+// @use 'bootstrap/scss/grid';
+// @use 'bootstrap/scss/forms';
+// @use 'bootstrap/scss/buttons';
+// ...add more as needed
+
+// Step 4: PrimeNG theme overrides
+@import 'styles/primeng-theme';
+
+// Step 5: App-wide styles
+@import 'styles/global';

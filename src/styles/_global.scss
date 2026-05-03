@@ -1,0 +1,956 @@
+.lr-navbar {
+  height: $navbar-height;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+}
+
+// ── Your existing .lr-navbar stays above this line ──────────
+
+// ════════════════════════════════════════════════════════════
+// LOGIN PAGE  —  .lr-login-*
+// ════════════════════════════════════════════════════════════
+
+// Page shell
+.lr-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $neutral-50;
+  background-image:
+    radial-gradient(circle at 18% 18%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 82% 82%, rgba(37, 99, 235, 0.04) 0%, transparent 50%);
+  padding: map-get($spacers, 5);  // 24px
+}
+
+// Card
+.lr-login-card {
+  background: #fff;
+  border-radius: $border-radius-xl;  // 20px
+  box-shadow: $shadow-lg;
+  border: 1px solid $neutral-200;
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+  animation: lr-card-enter $transition-spring both;
+
+  @keyframes lr-card-enter {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1);    }
+  }
+}
+
+// Card header (blue band)
+.lr-login-card__header {
+  background: linear-gradient(135deg, $primary-600 0%, $primary-700 100%);
+  padding: map-get($spacers, 6) map-get($spacers, 6) map-get($spacers, 5);  // 32 32 24
+  position: relative;
+  overflow: hidden;
+
+  // Decorative circles
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: 40px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+// Brand row inside header
+.lr-login-brand {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 2) + map-get($spacers, 1);  // 12px
+  margin-bottom: map-get($spacers, 4);               // 16px
+  position: relative;
+  z-index: 1;
+}
+
+.lr-login-brand__icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+  }
+}
+
+.lr-login-brand__name {
+  font-family: $font-family-display;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+
+  span { font-weight: 400; opacity: 0.75; }
+}
+
+.lr-login-card__title {
+  font-family: $font-family-display;
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+}
+
+.lr-login-card__subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: map-get($spacers, 1);  // 4px
+  position: relative;
+  z-index: 1;
+}
+
+// Card body
+.lr-login-card__body {
+  padding: map-get($spacers, 6) map-get($spacers, 6) map-get($spacers, 7);  // 32 32 40
+}
+
+// Form layout
+.lr-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 5);  // 24px
+}
+
+// Field group
+.lr-field {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 1) + 2px;  // 6px
+}
+
+.lr-field__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: $neutral-700;
+  font-family: $font-family-sans-serif;
+  letter-spacing: 0.01em;
+}
+
+// Input wrapper (positions icon inside)
+.lr-field__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lr-field__icon {
+  position: absolute;
+  left: 12px;
+  width: 18px;
+  height: 18px;
+  color: $neutral-400;
+  pointer-events: none;
+  transition: color $transition-base;
+}
+
+.lr-field__input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px 0 40px;
+  border: 1.5px solid $neutral-300;
+  border-radius: 4px;  // SRS spec: 4px for inputs
+  font-family: $font-family-sans-serif;
+  font-size: 15px;
+  color: $neutral-800;
+  background: #fff;
+  outline: none;
+  transition: border-color $transition-base, box-shadow $transition-base;
+
+  &::placeholder {
+    color: $neutral-400;
+    font-size: 14px;
+  }
+
+  &:hover  { border-color: $neutral-400; }
+
+  &:focus {
+    border-color: $primary-600;
+    box-shadow: $focus-ring;
+
+    // Sibling icon turns blue on focus
+    & ~ .lr-field__icon { color: $primary-600; }
+  }
+
+  &--pw { padding-right: 40px; }  // extra room for toggle button
+}
+
+// Password show/hide toggle
+.lr-field__pw-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: $neutral-400;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: color $transition-base;
+
+  &:hover { color: $primary-600; }
+
+  svg { width: 18px; height: 18px; }
+}
+
+// Forgot password link row
+.lr-login-forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -(map-get($spacers, 3));  // -12px — tightens gap above button
+}
+
+.lr-login-forgot {
+  font-size: 13px;
+  font-weight: 500;
+  color: $primary-600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color $transition-base;
+
+  &:hover {
+    color: $primary-700;
+    text-decoration: underline;
+  }
+}
+
+// Submit CTA button
+.lr-btn-login {
+  height: 46px;
+  width: 100%;
+  background: $primary-600;
+  color: #fff;
+  border: none;
+  border-radius: $border-radius;  // 8px
+  font-family: $font-family-sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: map-get($spacers, 2);  // 8px
+  transition: background $transition-base, transform $transition-spring, box-shadow $transition-base;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.30);
+  margin-top: map-get($spacers, 1);  // 4px
+
+  svg { width: 18px; height: 18px; }
+
+  &:hover:not(:disabled) {
+    background: $primary-700;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+  }
+
+  &:active:not(:disabled) {
+    background: $primary-800;
+    transform: scale(0.98);
+    box-shadow: $shadow-xs;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Divider
+.lr-login-divider {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 3);  // 12px
+  margin: map-get($spacers, 1) 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $neutral-200;
+  }
+
+  span {
+    font-size: 12px;
+    color: $neutral-400;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
+
+// Register prompt
+.lr-login-register {
+  text-align: center;
+  font-size: 14px;
+  color: $neutral-500;
+  margin-top: map-get($spacers, 1);
+
+  a {
+    color: $primary-600;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color $transition-base;
+    cursor: pointer;
+
+    &:hover {
+      color: $primary-700;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Toast / inline alert
+.lr-toast {
+  display: none;
+  align-items: center;
+  gap: map-get($spacers, 2) + 2px;  // 10px
+  padding: 12px map-get($spacers, 4);  // 12 16
+  border-radius: $border-radius;
+  font-size: 14px;
+  font-weight: 500;
+  border-left: 4px solid;
+  margin-bottom: map-get($spacers, 4);
+  animation: lr-toast-in $transition-base both;
+
+  @keyframes lr-toast-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+
+  svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  &--success {
+    display: flex;
+    background: $success-100;
+    color: $success-700;
+    border-color: $success-600;
+  }
+
+  &--error {
+    display: flex;
+    background: $danger-100;
+    color: $danger-700;
+    border-color: $danger-600;
+  }
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .lr-login-card__header {
+    padding: map-get($spacers, 5) map-get($spacers, 5) map-get($spacers, 4);
+  }
+
+  .lr-login-card__body {
+    padding: map-get($spacers, 5);
+  }
+
+  .lr-login-card__title { font-size: 19px; }
+}
+
+// ════════════════════════════════════════════════════════════
+// REGISTER PAGE  —  extends login styles, adds register-only
+// ════════════════════════════════════════════════════════════
+
+// Wider card for the register form (more fields)
+.lr-register-card {
+  background: #fff;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-lg;
+  border: 1px solid $neutral-200;
+  width: 100%;
+  max-width: 560px;         // wider than login's 440px
+  overflow: hidden;
+  animation: lr-card-enter $transition-spring both;
+}
+
+// 2-column grid for paired fields (name+username, email+phone, password+confirm)
+.lr-register-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: map-get($spacers, 4);  // 16px column gap
+
+  @media (max-width: 540px) {
+    grid-template-columns: 1fr;  // stack on mobile
+  }
+}
+
+// Register form — tighter row gap than login (more fields)
+.lr-register-form {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 4);  // 16px — tighter than login's 24px
+}
+
+// Select field — hides native arrow, shows custom chevron
+.lr-field__select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 36px;  // room for custom chevron
+  cursor: pointer;
+  background: #fff;
+
+  option[disabled] { color: $neutral-400; }
+}
+
+// Custom chevron for select (positioned right, after the left icon)
+.lr-field__chevron {
+  position: absolute;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  color: $neutral-400;
+  pointer-events: none;
+  transition: color $transition-base;
+}
+
+.lr-field__input-wrap:focus-within .lr-field__chevron {
+  color: $primary-600;
+}
+
+// Optional label hint (e.g. "optional" beside Phone label)
+.lr-field__label-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: $neutral-400;
+  margin-left: map-get($spacers, 1);  // 4px
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+// Inline validation error text
+.lr-field__error {
+  font-size: 12px;
+  color: $danger-600;
+  font-family: $font-family-sans-serif;
+  margin-top: 2px;
+}
+
+// Terms & privacy note
+.lr-register-terms {
+  font-size: 12px;
+  color: $neutral-500;
+  line-height: 1.6;
+  text-align: center;
+  margin-top: -(map-get($spacers, 1));  // -4px — pull closer to fields
+
+  a {
+    color: $primary-600;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color $transition-base;
+
+    &:hover {
+      color: $primary-700;
+      text-decoration: underline;
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// NAVBAR  —  .lr-navbar-*
+// All navbar styles live here — component SCSS file is empty
+// ════════════════════════════════════════════════════════════
+
+// ── Base (extends the existing .lr-navbar in this file) ───
+.lr-navbar {
+  height: $navbar-height;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  transition: box-shadow $transition-base;
+
+  // Scrolled state — shadow kicks in after 8px scroll
+  &--scrolled {
+    box-shadow: $shadow-md;
+  }
+}
+
+// Spacer — pushes page content below fixed navbar
+.lr-navbar__spacer {
+  height: $navbar-height;
+}
+
+// ── Inner layout ──────────────────────────────────────────
+.lr-navbar__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: $navbar-height;
+  padding: 0 map-get($spacers, 5);   // 0 24px
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 4);         // 16px
+}
+
+// ── Brand / Logo ──────────────────────────────────────────
+.lr-navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 2);         // 8px
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: opacity $transition-base;
+
+  &:hover { opacity: 0.85; }
+}
+
+.lr-navbar__brand-icon {
+  width: 32px;
+  height: 32px;
+  background: $primary-600;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: #fff;
+  }
+}
+
+.lr-navbar__brand-name {
+  font-family: $font-family-display;
+  font-size: 17px;
+  font-weight: 700;
+  color: $neutral-800;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.lr-navbar__brand-pro {
+  font-weight: 400;
+  color: $primary-600;
+}
+
+// ── Search bar ────────────────────────────────────────────
+.lr-navbar__search {
+  flex: 1;
+  max-width: 480px;
+  margin: 0 auto;
+
+  @media (max-width: 767px) { display: none; }
+}
+
+// .lr-search is also used on the listings page (SRS 16.7)
+// so it lives here as a global utility
+.lr-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &__icon {
+    position: absolute;
+    left: 12px;
+    width: 17px;
+    height: 17px;
+    color: $neutral-400;
+    pointer-events: none;
+    transition: color $transition-base;
+  }
+
+  &__input {
+    width: 100%;
+    height: 38px;
+    padding: 0 44px 0 38px;
+    background: $neutral-100;
+    border: 1.5px solid transparent;
+    border-radius: $border-radius-pill;
+    font-family: $font-family-sans-serif;
+    font-size: 14px;
+    color: $neutral-800;
+    outline: none;
+    transition:
+      background $transition-base,
+      border-color $transition-base,
+      box-shadow $transition-base;
+
+    &::placeholder { color: $neutral-400; }
+    &:hover        { background: $neutral-200; }
+
+    &:focus {
+      background: #fff;
+      border-color: $primary-600;
+      box-shadow: $focus-ring;
+
+      // sibling icon turns blue
+      ~ .lr-search__icon { color: $primary-600; }
+    }
+  }
+
+  // Arrow submit button inside the search pill
+  &__btn {
+    position: absolute;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    background: $primary-600;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background $transition-base, transform $transition-spring;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      stroke: #fff;
+    }
+
+    &:hover  { background: $primary-700; }
+    &:active { transform: scale(0.92);   }
+  }
+
+  // Mobile variant — rectangular, no submit button
+  &--mobile {
+    .lr-search__input {
+      border-radius: $border-radius;
+      height: 40px;
+      padding-right: 12px;
+    }
+  }
+}
+
+// ── Right-side actions row ────────────────────────────────
+.lr-navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 2);         // 8px
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+// ── Icon-only buttons (bell, mobile search toggle) ────────
+.lr-navbar__icon-btn {
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $neutral-500;
+  position: relative;
+  transition: background $transition-base, color $transition-base;
+
+  svg { width: 20px; height: 20px; }
+
+  &:hover {
+    background: $neutral-100;
+    color: $primary-600;
+  }
+}
+
+// Notification count dot
+.lr-navbar__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  background: $danger-600;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: $font-family-sans-serif;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  line-height: 1;
+}
+
+// ── Avatar + chevron wrapper ──────────────────────────────
+.lr-navbar__avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: $border-radius;
+  transition: background $transition-base;
+  position: relative;
+  user-select: none;
+
+  &:hover { background: $neutral-100; }
+}
+
+.lr-navbar__avatar {
+  width: 32px;
+  height: 32px;
+  background: $primary-600;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-display;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.lr-navbar__avatar-chevron {
+  width: 14px;
+  height: 14px;
+  color: $neutral-500;
+  transition: transform $transition-base;
+
+  &--open { transform: rotate(180deg); }
+}
+
+// ── User dropdown menu ────────────────────────────────────
+.lr-navbar__dropdown {
+  position: absolute;
+  top: calc(#{$navbar-height} - 8px);
+  right: map-get($spacers, 5);       // 24px from edge
+  width: 240px;
+  background: #fff;
+  border: 1px solid $neutral-200;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  z-index: 1100;
+  overflow: hidden;
+
+  // Hidden state
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  pointer-events: none;
+  transition:
+    opacity $transition-base,
+    transform $transition-base;
+
+  // Open state
+  &--open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+  }
+}
+
+.lr-navbar__dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 3);         // 12px
+  padding: map-get($spacers, 4);     // 16px
+  background: $neutral-50;
+}
+
+.lr-navbar__dropdown-avatar {
+  width: 36px;
+  height: 36px;
+  background: $primary-600;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-display;
+  font-size: 15px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.lr-navbar__dropdown-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: $neutral-800;
+  font-family: $font-family-sans-serif;
+  line-height: 1.3;
+}
+
+.lr-navbar__dropdown-email {
+  font-size: 12px;
+  color: $neutral-500;
+  font-family: $font-family-mono;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
+}
+
+.lr-navbar__dropdown-divider {
+  height: 1px;
+  background: $neutral-200;
+  margin: 0;
+}
+
+.lr-navbar__dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 3);         // 12px
+  padding: 10px map-get($spacers, 4);
+  font-size: 14px;
+  font-weight: 500;
+  color: $neutral-700;
+  font-family: $font-family-sans-serif;
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: background $transition-base, color $transition-base;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: $neutral-400;
+    transition: color $transition-base;
+  }
+
+  &:hover {
+    background: $primary-50;
+    color: $primary-700;
+    svg { color: $primary-600; }
+  }
+
+  // Danger variant — logout
+  &--danger {
+    color: $danger-600;
+    svg { color: $danger-600; }
+
+    &:hover {
+      background: $danger-100;
+      color: $danger-700;
+      svg { color: $danger-700; }
+    }
+  }
+}
+
+// ── Auth buttons (logged-out state) ───────────────────────
+// .lr-btn-ghost and .lr-btn-primary are global button utilities
+// used beyond the navbar (landing page CTAs, etc.)
+
+.lr-navbar__auth-btns {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 2);         // 8px
+}
+
+.lr-btn-ghost {
+  height: 36px;
+  padding: 0 map-get($spacers, 4);   // 0 16px
+  background: none;
+  border: 1.5px solid $neutral-300;
+  border-radius: $border-radius;
+  font-family: $font-family-sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: $neutral-700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color $transition-base,
+    color $transition-base,
+    background $transition-base;
+
+  &:hover {
+    border-color: $primary-600;
+    color: $primary-600;
+    background: $primary-50;
+  }
+
+  &:active { transform: scale(0.97); }
+}
+
+.lr-btn-primary {
+  height: 36px;
+  padding: 0 map-get($spacers, 4);   // 0 16px
+  background: $primary-600;
+  border: 1.5px solid $primary-600;
+  border-radius: $border-radius;
+  font-family: $font-family-sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  transition:
+    background $transition-base,
+    box-shadow $transition-base,
+    transform $transition-spring;
+
+  &:hover {
+    background: $primary-700;
+    border-color: $primary-700;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+  }
+
+  &:active { transform: scale(0.97); }
+}
+
+// ── Mobile search drawer ──────────────────────────────────
+.lr-navbar__mobile-search {
+  overflow: hidden;
+  max-height: 0;
+  padding: 0 map-get($spacers, 4);
+  transition:
+    max-height $transition-base,
+    padding $transition-base;
+
+  &--open {
+    max-height: 64px;
+    padding: map-get($spacers, 2) map-get($spacers, 4) map-get($spacers, 3);
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────
+@media (max-width: 480px) {
+  .lr-navbar__inner {
+    padding: 0 map-get($spacers, 4); // 0 16px on small screens
+  }
+
+  .lr-navbar__brand-name {
+    font-size: 15px;
+  }
+
+  // Hide "Sign in" ghost button on very small screens
+  // keep "Get started" CTA visible
+  .lr-navbar__auth-btns .lr-btn-ghost {
+    display: none;
+  }
+}

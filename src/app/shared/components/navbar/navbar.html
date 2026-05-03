@@ -1,0 +1,128 @@
+<nav class="lr-navbar" [class.lr-navbar--scrolled]="isScrolled">
+    <div class="lr-navbar__inner">
+        <!-- ── Brand / Logo ──────────────────────────── -->
+        <a class="lr-navbar__brand" routerLink="/" aria-label="LaptopRent Pro home">
+        <div class="lr-navbar__brand-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v8H4V6zm-2 9h20l-1.5 2.5A1 1 0 0119.5 18h-15a1 1 0 01-.866-.5L2 15z"/>
+            </svg>
+        </div>
+        <span class="lr-navbar__brand-name">
+            LaptopRent<span class="lr-navbar__brand-pro"> Pro</span>
+        </span>
+        </a>
+        <!-- ── Search bar (desktop) ──────────────────── -->
+        <div class="lr-navbar__search">
+            <div class="lr-search">
+                <svg class="lr-search__icon" viewBox="0 0 20 20" fill="none"
+                    stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <circle cx="8.5" cy="8.5" r="5.5"/>
+                    <path d="M15 15l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input class="lr-search__input" type="text" placeholder="Search laptops, brands, specs…" [(ngModel)]="searchQuery"
+                (keyup.enter)="onSearch()" aria-label="Search laptops">
+                <button class="lr-search__btn" type="button" (click)="onSearch()" aria-label="Submit search">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                        <path d="M4 10h12M10 4l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!--Right Actions-->
+        <div class="lr-navbar__actions">
+            <!-- Mobile search toggle -->
+            <button class="lr-navbar__icon-btn lr-navbar__search-toggle d-lg-none" type="button"
+                    (click)="toggleMobileSearch()" aria-label="Toggle search">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <circle cx="8.5" cy="8.5" r="5.5"/>
+                    <path d="M15 15l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <!--Logged In State-->
+            @if(user != null) {
+                <!--Notifications Bell-->
+                <button class="lr-navbar__icon-btn" type="button" aria-label="Notifications">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7">
+                        <path d="M10 2a6 6 0 00-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 00-6-6z" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8.5 17a1.5 1.5 0 003 0" stroke-linecap="round"/>
+                    </svg>
+                    <span class="lr-navbar__badge">3</span>
+                </button>
+                <!-- Avatar / user menu -->
+                <div class="lr-navbar__avatar-wrap" (click)="toggleUserMenu()" #avatarRef>
+                    <div class="lr-navbar__avatar" [attr.aria-label]="'User menu for ' + user?.username">
+                        {{ user?.username?.charAt(0)?.toUpperCase() }}
+                    </div>
+                    <svg class="lr-navbar__avatar-chevron" viewBox="0 0 16 16" fill="none"
+                        stroke="currentColor" stroke-width="1.6" [class.lr-navbar__avatar-chevron--open]="userMenuOpen">
+                        <path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <!--Drop Down Menu-->
+                <div class="lr-navbar__dropdown" [class.lr-navbar__dropdown--open]="userMenuOpen">
+                    <div class="lr-navbar__dropdown-header">
+                        <div class="lr-navbar__dropdown-avatar">
+                            {{ user?.username?.charAt(0)?.toUpperCase() }}
+                        </div>
+                        <div>
+                            <div class="lr-navbar__dropdown-name">{{ user?.username}}</div>
+                            <div class="lr-navbar__dropdown-email">{{ user?.email}}</div>
+                        </div>
+                    </div>
+                    <div class="lr-navbar__dropdown-divider"></div>
+                    <a class="lr-navbar__dropdown-item" routerLink="/dashboard" (click)="userMenuOpen = false">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <rect x="2" y="2" width="7" height="7" rx="1.5"/>
+                            <rect x="11" y="2" width="7" height="7" rx="1.5"/>
+                            <rect x="2" y="11" width="7" height="7" rx="1.5"/>
+                            <rect x="11" y="11" width="7" height="7" rx="1.5"/>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a class="lr-navbar__dropdown-item" routerLink="/dashboard/rentals" (click)="userMenuOpen = false">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v8H4V6zm-2 9h20" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        My Rentals
+                    </a>
+                    <div class="lr-navbar__dropdown-divider"></div>
+                    <button class="lr-navbar__dropdown-item lr-navbar__dropdown-item--danger" type="button" (click)="logoutUser()">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <path d="M13 15l3-3-3-3M16 12H7M10 3H5a2 2 0 00-2 2v10a2 2 0 002 2h5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+            } @else {
+                <div class="lr-navbar__auth-btns">
+                    <a class="lr-btn-ghost" routerLink="/auth/login">Sign In</a>
+                    <a class="lr-btn-primary" routerLink="/auth/register">Get Started</a>
+                </div>
+            }
+        </div>
+    </div>
+    <!-- ── Mobile search bar (slides down) ──────────── -->
+    <div class="lr-navbar__mobile-search" [class.lr-navbar__mobile-search--open]="mobileSearchOpen">
+        <div class="lr-search lr-search--mobile">
+        <svg class="lr-search__icon" viewBox="0 0 20 20" fill="none"
+            stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <circle cx="8.5" cy="8.5" r="5.5"/>
+            <path d="M15 15l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input
+            class="lr-search__input"
+            type="text"
+            placeholder="Search laptops…"
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="onSearch()"
+            aria-label="Search laptops"
+        >
+        </div>
+    </div>
+</nav>
+
+<!-- Spacer so page content sits below fixed navbar -->
+<div class="lr-navbar__spacer"></div>   

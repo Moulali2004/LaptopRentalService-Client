@@ -1,0 +1,107 @@
+<div class="lr-login-page">
+    <div class="lr-login-card">
+
+        <!--Header section-->
+        <div class="lr-login-card__header">
+            <div class="lr-login-brand">
+                <div class="lr-login-brand__icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v8H4V6zm-2 9h20l-1.5 2.5A1 1 0 0119.5 18h-15a1 1 0 01-.866-.5L2 15z"/>
+                    </svg>
+                </div>
+                <span class="lr-login-brand__name">LaptopRent<span> Pro</span></span>
+            </div>
+
+            <h1 class="lr-login-card__title">Welcome back</h1>
+            <p class="lr-login-card__subtitle">Sign in to your account to continue</p>
+        </div>
+        <!--Body section-->
+        <div class="lr-login-card__body">
+            <!-- Toast — shown/hidden via Angular *ngIf or class binding -->
+             @if(errorMessage) {
+                <div class="lr-toast lr-toast--error" role="alert" aria-live="polite">
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"/>
+                    </svg>
+                    <span>{{ errorMessage }}</span>
+                </div>
+             }
+            <!--Form -->
+            <form class="lr-login-form" [formGroup]="userLoginForm" (ngSubmit)="onSubmit()">
+                
+                <div class="lr-field">
+                    <label class="lr-field__label" for="email">Email address</label>
+                    <div class="lr-field__input-wrap">
+                        <input class="lr-field__input" type="email" id="email" formControlName="email" placeholder="you@example.com" autocomplete="email">
+                        <svg class="lr-field__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                            <path d="M2.5 6.5l7.5 5 7.5-5M2.5 5.5h15a.5.5 0 01.5.5v8a.5.5 0 01-.5.5h-15a.5.5 0 01-.5-.5V6a.5.5 0 01.5-.5z"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <!-- Validation -->
+                     @if(userLoginForm.get('email')?.invalid && userLoginForm.get('email')?.touched) {
+                        <small class="lr-field__error"> Please enter a valid email address.</small>
+                     }
+                </div>
+                <div class="lr-field">
+                    <label class="lr-field__label" for="password">Password</label>
+                    <div class="lr-field__input-wrap">
+                        <!--need to fix type here-->
+                        <input class="lr-field__input lr-field__input--pw" [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="Enter Password." autocomplete="current-password">
+                        <svg class="lr-field__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                            <rect x="4" y="9" width="12" height="8" rx="2" stroke-linecap="round"/>
+                            <path d="M7 9V7a3 3 0 016 0v2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="10" cy="13" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                        <button class="lr-field__pw-toggle" type="button" (click)="showPassword = !showPassword" 
+                        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                            @if(!showPassword) {
+                                <!-- Eye open -->
+                                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                    <path d="M1.5 10S4.5 4 10 4s8.5 6 8.5 6-3 6-8.5 6S1.5 10 1.5 10z" stroke-linecap="round"/>
+                                    <circle cx="10" cy="10" r="2.5"/>
+                                </svg>
+                            } @else {
+                                <!-- Eye off  -->
+                                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                    <path d="M2 2l16 16M4.55 4.55A8.85 8.85 0 001.5 10s3 6 8.5 6a8.7 8.7 0 004.95-1.55M8 8a2.5 2.5 0 003.54 3.54M11.17 5.22A8.55 8.55 0 0110 5c-5.5 0-8.5 5-8.5 5a10.2 10.2 0 001.65 2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            }
+                        </button>
+                    </div>
+                    <!-- Validation -->
+                    @if(userLoginForm.get('password')?.invalid && userLoginForm.get('password')?.touched) {
+                        <small class="lr-field__error"> Password is required.</small>
+                    }
+                </div>
+                <!-- Forgot password -->
+                <div class="lr-login-forgot-row">
+                    <a class="lr-login-forgot" routerLink="/auth/forgot-password">
+                        Forgot password?
+                    </a>
+                </div>
+                <!-- Submit -->
+                <button class="lr-btn-login" type="submit"
+                        [disabled]="userLoginForm.invalid || isLoading">
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                        d="M3 4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5v3a.75.75 0 01-1.5 0v-3h-11v11h3a.75.75 0 010 1.5h-3A1.5 1.5 0 013 15.5v-11zm9.22 5.47a.75.75 0 011.06 0l2.25 2.25a.75.75 0 010 1.06l-2.25 2.25a.75.75 0 01-1.06-1.06l.97-.97H9.75a.75.75 0 010-1.5h3.44l-.97-.97a.75.75 0 010-1.06z"
+                        clip-rule="evenodd"/>
+                    </svg>
+                    {{ isLoading ? 'Signing in…' : 'Sign in' }}
+                </button>
+            </form>
+            <!-- Register prompt -->
+            <div class="lr-login-divider">
+                <span>Don't have an account?</span>
+            </div>
+
+            <div class="lr-login-register">
+                <a routerLink="/auth/register">Create a free account</a>
+            </div> 
+        </div>
+    </div>
+
+</div>
