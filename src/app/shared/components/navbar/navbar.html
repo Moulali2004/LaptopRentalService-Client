@@ -51,8 +51,8 @@
                 </button>
                 <!-- Avatar / user menu -->
                 <div class="lr-navbar__avatar-wrap" (click)="toggleUserMenu()" #avatarRef>
-                    <div class="lr-navbar__avatar" [attr.aria-label]="'User menu for ' + user?.username">
-                        {{ user?.username?.charAt(0)?.toUpperCase() }}
+                    <div class="lr-navbar__avatar" [attr.aria-label]="'User menu for ' + user.username">
+                        {{ user.username.charAt(0).toUpperCase() }}
                     </div>
                     <svg class="lr-navbar__avatar-chevron" viewBox="0 0 16 16" fill="none"
                         stroke="currentColor" stroke-width="1.6" [class.lr-navbar__avatar-chevron--open]="userMenuOpen">
@@ -64,11 +64,11 @@
                 <div class="lr-navbar__dropdown" [class.lr-navbar__dropdown--open]="userMenuOpen">
                     <div class="lr-navbar__dropdown-header">
                         <div class="lr-navbar__dropdown-avatar">
-                            {{ user?.username?.charAt(0)?.toUpperCase() }}
+                            {{ user.username.charAt(0).toUpperCase() }}
                         </div>
                         <div>
-                            <div class="lr-navbar__dropdown-name">{{ user?.username}}</div>
-                            <div class="lr-navbar__dropdown-email">{{ user?.email}}</div>
+                            <div class="lr-navbar__dropdown-name">{{ user.username}}</div>
+                            <div class="lr-navbar__dropdown-email">{{ user.email}}</div>
                         </div>
                     </div>
                     <div class="lr-navbar__dropdown-divider"></div>
