@@ -954,3 +954,434 @@
     display: none;
   }
 }
+
+// ════════════════════════════════════════════════════════════
+// LAPTOP CARD  —  .lr-laptop-card
+// Append this block to _global.scss
+// ════════════════════════════════════════════════════════════
+
+// ── Card shell ────────────────────────────────────────────
+.lr-laptop-card {
+  background: #fff;
+  border: 1px solid $neutral-200;
+  border-radius: $border-radius-lg;    // 14px
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform $transition-spring,
+    box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+
+    // zoom image on hover
+    .lr-laptop-card__img {
+      transform: scale(1.05);
+    }
+  }
+
+  // Unavailable state — desaturate entire card
+  &--unavailable {
+    opacity: 0.65;
+    pointer-events: none;
+  }
+}
+
+// ── Gallery (image area) ──────────────────────────────────
+.lr-laptop-card__gallery {
+  position: relative;
+  background: $neutral-100;
+  overflow: hidden;
+}
+
+// Image wrapper — fixed aspect ratio
+.lr-laptop-card__img-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $neutral-100;
+}
+
+.lr-laptop-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 400ms ease;
+}
+
+// ── Category chip — top left overlay ─────────────────────
+.lr-laptop-card__category-chip {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: $font-family-sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: $border-radius-pill;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  // Category color variants — matches SRS Section 4.2 CAT-06
+  &.lr-chip--student  { background: rgba(37,  99, 235, 0.12); color: $primary-700;  }
+  &.lr-chip--gaming   { background: rgba(124, 58, 237, 0.12); color: #6D28D9;       }
+  &.lr-chip--business { background: rgba(22, 163,  74, 0.12); color: $success-600;  }
+  &.lr-chip--editing  { background: rgba(217,119,   6, 0.12); color: $warning-600;  }
+}
+
+// ── Low stock warning — top right overlay ─────────────────
+.lr-laptop-card__stock-warn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: $font-family-sans-serif;
+  color: $warning-600;
+  background: $warning-100;
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  padding: 3px 8px;
+  border-radius: $border-radius-pill;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+}
+
+// ── Unavailable overlay ───────────────────────────────────
+.lr-laptop-card__unavailable-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    font-family: $font-family-sans-serif;
+    color: $neutral-500;
+    background: #fff;
+    border: 1px solid $neutral-200;
+    padding: 6px 14px;
+    border-radius: $border-radius-pill;
+  }
+}
+
+// ── PrimeNG Carousel overrides ────────────────────────────
+// Scoped to .lr-card-carousel (passed via styleClass)
+.lr-card-carousel {
+
+  // Remove all carousel chrome padding
+  &.p-carousel .p-carousel-content { padding: 0; }
+  &.p-carousel .p-carousel-item    { padding: 0; }
+
+  // Indicator dots
+  &.p-carousel .p-carousel-indicators {
+    position: absolute;
+    bottom: 8px;
+    left: 0; right: 0;
+    padding: 0;
+    gap: 4px;
+    justify-content: center;
+    z-index: 2;
+
+    .p-carousel-indicator button {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      border: none;
+      padding: 0;
+      transition: background $transition-base, width $transition-base;
+    }
+
+    .p-carousel-indicator.p-highlight button {
+      background: #fff;
+      width: 18px;
+      border-radius: $border-radius-pill;
+    }
+  }
+
+  // Nav arrow buttons
+  &.p-carousel .p-carousel-prev,
+  &.p-carousel .p-carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    border-radius: 50%;
+    box-shadow: $shadow-sm;
+    color: $neutral-700;
+    opacity: 0;
+    transition: opacity $transition-base, background $transition-base;
+
+    .p-icon { width: 12px; height: 12px; }
+
+    &:hover { background: #fff; }
+  }
+
+  &.p-carousel .p-carousel-prev { left: 8px;  }
+  &.p-carousel .p-carousel-next { right: 8px; }
+
+  // Show nav arrows only on card hover
+  .lr-laptop-card:hover & {
+    .p-carousel-prev,
+    .p-carousel-next { opacity: 1; }
+  }
+}
+
+// ── Card body ─────────────────────────────────────────────
+.lr-laptop-card__body {
+  padding: map-get($spacers, 4);     // 16px
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 3);         // 12px
+  flex: 1;
+}
+
+// ── Header: name group + price badge ─────────────────────
+.lr-laptop-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: map-get($spacers, 2);         // 8px
+}
+
+.lr-laptop-card__title-group {
+  min-width: 0;   // allows text truncation inside flex
+}
+
+.lr-laptop-card__brand {
+  font-size: 11px;
+  font-weight: 600;
+  color: $primary-600;
+  font-family: $font-family-sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 2px;
+}
+
+.lr-laptop-card__name {
+  font-family: $font-family-display;
+  font-size: 15px;
+  font-weight: 600;
+  color: $neutral-800;
+  line-height: 1.3;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Price badge — top right of card body
+.lr-laptop-card__price-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  flex-shrink: 0;
+  background: $primary-50;
+  border: 1px solid $primary-100;
+  border-radius: $border-radius;
+  padding: 4px 8px;
+}
+
+.lr-laptop-card__price-amount {
+  font-family: $font-family-display;
+  font-size: 16px;
+  font-weight: 700;
+  color: $primary-700;
+  line-height: 1;
+}
+
+.lr-laptop-card__price-unit {
+  font-size: 11px;
+  font-weight: 500;
+  color: $primary-600;
+  font-family: $font-family-sans-serif;
+}
+
+// ── Spec tags grid ────────────────────────────────────────
+.lr-laptop-card__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: map-get($spacers, 1) + 2px;   // 6px
+}
+
+// .lr-spec-tag — also reused on detail page
+.lr-spec-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: $font-family-sans-serif;
+  color: $neutral-600;
+  background: $neutral-100;
+  border: 1px solid $neutral-200;
+  border-radius: $border-radius;      // 8px
+  padding: 4px 8px;
+  white-space: nowrap;
+  transition: background $transition-base, color $transition-base;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    color: $neutral-400;
+  }
+
+  // GPU tag gets a purple highlight — stands out for gaming cards
+  &--highlight {
+    background: rgba(124, 58, 237, 0.07);
+    border-color: rgba(124, 58, 237, 0.15);
+    color: #5B21B6;
+
+    svg { color: #7C3AED; }
+  }
+}
+
+// ── Footer: deposit + CTA buttons ────────────────────────
+.lr-laptop-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: map-get($spacers, 2);         // 8px
+  margin-top: auto;                  // pushes footer to bottom of card
+  padding-top: map-get($spacers, 3); // 12px
+  border-top: 1px solid $neutral-100;
+}
+
+.lr-laptop-card__deposit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+  white-space: nowrap;
+
+  svg {
+    width: 13px;
+    height: 13px;
+    color: $neutral-400;
+    flex-shrink: 0;
+  }
+}
+
+.lr-laptop-card__actions {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 1) + 2px;   // 6px
+}
+
+// Ghost details button
+.lr-laptop-card__btn-ghost {
+  height: 32px;
+  padding: 0 map-get($spacers, 3);   // 0 12px
+  background: none;
+  border: 1.5px solid $neutral-300;
+  border-radius: $border-radius;
+  font-family: $font-family-sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: $neutral-600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color $transition-base,
+    color $transition-base,
+    background $transition-base;
+
+  &:hover {
+    border-color: $primary-600;
+    color: $primary-600;
+    background: $primary-50;
+  }
+}
+
+// Primary rent now button
+.lr-laptop-card__btn-primary {
+  height: 32px;
+  padding: 0 map-get($spacers, 3);   // 0 12px
+  background: $primary-600;
+  border: 1.5px solid $primary-600;
+  border-radius: $border-radius;
+  font-family: $font-family-sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+  transition:
+    background $transition-base,
+    box-shadow $transition-base,
+    transform $transition-spring;
+
+  svg { width: 13px; height: 13px; }
+
+  &:hover:not(:disabled) {
+    background: $primary-700;
+    border-color: $primary-700;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  }
+
+  &:active:not(:disabled) { transform: scale(0.96); }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// LAPTOP CARD GRID  —  .lr-laptop-grid
+// Responsive grid wrapper for the listings page
+// ════════════════════════════════════════════════════════════
+
+.lr-laptop-grid {
+  display: grid;
+  gap: map-get($spacers, 5);         // 24px
+
+  // Desktop — 3 columns
+  grid-template-columns: repeat(3, 1fr);
+
+  // Tablet — 2 columns
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Mobile — 1 column
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: map-get($spacers, 4);       // 16px
+  }
+}

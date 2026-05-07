@@ -1,1 +1,101 @@
-<p>laptopcard works!</p>
+<div class="lr-laptop-card" [class.lr-laptop-card--unavialable]="!laptop?.availableUnits">
+    <div class="lr-laptop-card__gallery">
+        <span class="lr-laptop-card__category-chip lr-chip--{{ laptop?.category }}">
+            {{ laptop?.category }}
+        </span>
+
+        <!-- Low stock warning — top right -->
+        @if (laptop && laptop.availableUnits > 0 && laptop.availableUnits < 3) {
+            <span class="lr-laptop-card__stock-warn">
+                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.5a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3A.75.75 0 018 4.5zm0 6.5a.875.875 0 110-1.75A.875.875 0 018 11z"/>
+                </svg>
+                Only {{ laptop.availableUnits }} left
+            </span>
+        }
+        <!-- Unavailable overlay -->
+        @if (laptop && !laptop.availableUnits) {
+            <div class="lr-laptop-card__unavailable-overlay">
+                <span>Currently Unavailable</span>
+            </div>
+        }
+        <!-- PrimeNG Carousel -->
+        <p-carousel
+            [value]="laptop?.images ?? []"
+            [numVisible]="1"
+            [numScroll]="1"
+            [circular]="true"
+            [showIndicators]="(laptop?.images?.length ?? 0) > 1"
+            [showNavigators]="(laptop?.images?.length ?? 0) > 1"
+            styleClass="lr-card-carousel"
+        >
+            <ng-template pTemplate="item" let-image>
+                <div class="lr-laptop-card__img-wrap">
+                <img
+                    [src]="image"
+                    [alt]="laptop?.name"
+                    class="lr-laptop-card__img"
+                    loading="lazy"
+                >
+                </div>
+            </ng-template>
+        </p-carousel>
+    </div>
+
+    <div class="lr-laptop-card__body">
+        <div class="lr-laptop-card__header">
+            <div class="lr-laptop-card__title-group">
+                <p class="lr-laptop-card__brand">{{ laptop?.brand }}</p>
+                <h3 class="lr-laptop-card__name">{{ laptop?.name }}</h3>
+            </div>
+            <div class="lr-laptop-card__price-badge">
+                <span class="lr-laptop-card__price-amount">₹{{ laptop?.pricePerDay }}</span>
+                <span class="lr-laptop-card__price-unit">/day</span>
+            </div>
+        </div>
+        <div class="lr-laptop-card__specs">
+            <span class="lr-scpec-tag">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <rect x="1" y="3" width="14" height="10" rx="1.5"/>
+                    <path d="M5 7h6M5 9.5h4" stroke-linecap="round"/>
+                </svg>
+                {{ laptop?.specs?.ram }} RAM
+            </span>
+            <span class="lr-scpec-tag">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <rect x="3" y="1" width="10" height="14" rx="1.5"/>
+                    <path d="M6 4h4M6 7h4M6 10h2" stroke-linecap="round"/>
+                </svg>
+                {{ laptop?.specs?.storage }}
+            </span>
+            <span class="lr-scpec-tag">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <rect x="1" y="4" width="14" height="8" rx="1.5"/>
+                    <path d="M4 8h2M10 8h2" stroke-linecap="round"/>
+                </svg>
+                {{ laptop?.specs?.processor }}
+            </span>
+        </div>
+        <div class="lr-laptop-card__footer">
+            <div class="lr-laptop-card__deposit">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <circle cx="8" cy="8" r="6.5"/>
+                    <path d="M8 4.5v7M6 6h2.5a1.5 1.5 0 010 3H6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                ₹{{ laptop?.securityDeposit }} deposit
+            </div>
+            <div class="lr-laptop-card__actions">
+                <button class="lr-laptop-card__btn-ghost" type="button" [routerLink]="['/laptop', laptop?._id]">
+                    Details
+                </button>
+                <button class="lr-laptop-card__btn-primary" type="button" [disabled]="!laptop?.availableUnits" [routerLink]="laptop?.availableUnits ? ['/booking']: null" [queryParams]="{laptopId: laptop?._id}">
+                    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M2 2.75A.75.75 0 012.75 2h10.5a.75.75 0 010 1.5H2.75A.75.75 0 012 2.75zm0 5A.75.75 0 012.75 7h10.5a.75.75 0 010 1.5H2.75A.75.75 0 012 7.75zM2 12.75a.75.75 0 01.75-.75h5a.75.75 0 010 1.5h-5a.75.75 0 01-.75-.75z" clip-rule="evenodd"/>
+                        <path d="M13.5 11.25a.75.75 0 00-1.5 0v1.5h-1.5a.75.75 0 000 1.5H12v1.5a.75.75 0 001.5 0V14.25H15a.75.75 0 000-1.5h-1.5v-1.5z"/>
+                    </svg>
+                    Rent now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
