@@ -1,1 +1,158 @@
-<p>home works!</p>
+<section class="lr-hero">
+  <div class="lr-hero__grid-bg" aria-hidden="true"></div>
+  <div class="lr-hero__blob lr-hero__blob--1" aria-hidden="true"></div>
+  <div class="lr-hero__blob lr-hero__blob--2" aria-hidden="true"></div>
+
+  <div class="lr-hero__inner">
+    <div class="lr-hero__copy">
+      <span class="lr-hero__eyebrow">
+        <span class="lr-hero__eyebrow-dot"></span>
+        India's On-Demand Laptop Rental Platform
+      </span>
+      <h1 class="lr-hero__headline">
+        The laptop you need,<br>
+        <span class="lr-hero__headline-accent">when you need it.</span>
+      </h1>
+      <p class="lr-hero__subtext">
+        Browse premium laptops for students, developers, gamers and businesses.
+        Delivered to your door. Returned when you're done.
+        No EMIs, no ownership stress.
+      </p>
+      <div class="lr-hero__actions">
+        <a class="lr-btn-hero-primary" routerLink="/laptops">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M3 4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5v8a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 013 12.5v-8zM1 15.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H1.75a.75.75 0 01-.75-.75z"/>
+          </svg>
+          Browse laptops
+        </a>
+        <a class="lr-btn-hero-ghost" routerLink="/auth/register">
+          Create free account
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M4 10h12M10 4l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+      <div class="lr-hero__trust">
+        @for (badge of trustBadges; track badge) {
+          <div class="lr-trust-badge">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.536 5.136a.75.75 0 00-1.072-1.05L7.08 9.099 5.47 7.49a.75.75 0 10-1.06 1.06l2.25 2.25a.75.75 0 001.08-.025l3.796-3.639z" clip-rule="evenodd"/>
+            </svg>
+            {{ badge }}
+          </div>
+        }
+      </div>
+    </div>
+    <div class="lr-hero__visual">
+        <div class="lr-hero__stats-card">
+            @for (stat of heroStats; track stat.label; let last = $last) {
+                <div class="lr-hero__stat">
+                    <span class="lr-hero__stat-number">{{ stat.value }}<span>{{ stat.suffix }}</span></span>
+                    <span class="lr-hero__stat-label">{{ stat.label }}</span>
+                </div>
+                @if (!last) { <div class="lr-hero__stat-divider"></div> }
+            }
+        </div>
+        <div class="lr-hero__device-card">
+            <div class="lr-hero__device-screen">
+                <div class="lr-hero__device-topbar">
+                    <span class="lr-hero__device-dot --red"></span>
+                    <span class="lr-hero__device-dot --yellow"></span>
+                    <span class="lr-hero__device-dot --green"></span>
+                </div>
+                <div class="lr-hero__device-bar"></div>
+                <div class="lr-hero__device-bar lr-hero__device-bar--short"></div>
+                <div class="lr-hero__device-bar lr-hero__device-bar--shorter"></div>
+                <div class="lr-hero__device-chip">
+                    <span class="lr-hero__device-chip-dot"></span>
+                    <span>Available now</span>
+                </div>
+            </div>
+            <div class="lr-hero__device-base"></div>
+            <div class="lr-hero__device-shadow"></div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<section class="lr-section lr-section--categories">
+    <div class="lr-section__inner">
+        <div class="lr-section__header">
+            <h2 class="lr-section__title">Find your perfect match</h2>
+            <p class="lr-section__subtitle">Every laptop curated for your specific use case</p>
+        </div>
+        <div class="lr-categories-grid">
+            @for (cat of categories; track cat.slug) {
+                <a class="lr-category-card" [routerLink]="['/laptops']" [queryParams]="{ category: cat.slug }"
+                    [style.--cat-color]="cat.color" [style.--cat-bg]="cat.bg">
+                    <div class="lr-category-card__icon-wrap">
+                        <svg class="lr-category-card__icon" viewBox="0 0 48 48" fill="none" stroke="var(--cat-color)" stroke-width="1.6"
+                            aria-hidden="true">
+                            <path [attr.d]="cat.iconPath" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="lr-category-card__name">{{ cat.name }}</h3>
+                    <p class="lr-category-card__desc">{{ cat.desc }}</p>
+                    <div class="lr-category-card__footer">
+                        <span class="lr-category-card__tag">From {{ cat.startingPrice }}</span>
+                        <svg class="lr-category-card__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"
+                            aria-hidden="true">
+                            <path d="M3 8h10M8 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="lr-section lr--how">
+    <div class="lr-section__inner">
+        <div class="lr-section__header">
+            <span class="lr-section__eyebrow">Simple as 1 – 2 – 3</span>
+            <h2 class="lr-section__title">How LaptopRent Pro works</h2>
+            <p class="lr-section__subtitle">From browsing to delivery in under 10 minutes</p>
+        </div>
+        <div class="lr-how-steps">
+            @for (step of howSteps; track step.number; let last = $last) {
+                <div class="lr-how-step">
+                <div class="lr-how-step__number">{{ step.number }}</div>
+                <div class="lr-how-step__icon-wrap">
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor"
+                        stroke-width="1.5" aria-hidden="true">
+                    <path [attr.d]="step.iconPath" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="lr-how-step__title">{{ step.title }}</h3>
+                <p class="lr-how-step__desc">{{ step.desc }}</p>
+                </div>
+                @if (!last) {
+                    <div class="lr-how-connector" aria-hidden="true">
+                        <svg viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M0 12h52M44 4l8 8-8 8" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-dasharray="4 3"/>
+                        </svg>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<section class="lr-quote-strip">
+    <div class="lr-quote-strip__blob" aria-hidden="true"></div>
+    <div class="lr-quote-strip__inner">
+        <div class="lr-quote-strip__mark" aria-hidden="true">"</div>
+        <blockquote class="lr-quote-strip__text">
+            Why buy a laptop you'll use for three months,<br>
+            when you can rent the perfect one for exactly that long?
+        </blockquote>
+        <p class="lr-quote-strip__attribution">— The smarter way to compute</p>
+        <a class="lr-btn-hero-primary" routerLink="/laptops">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M3 4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5v8a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 013 12.5v-8zM1 15.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H1.75a.75.75 0 01-.75-.75z"/>
+            </svg>
+            Start browsing — it's free
+        </a>
+    </div>
+</section>
