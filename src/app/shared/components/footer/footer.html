@@ -1,1 +1,101 @@
-<p>footer works!</p>
+<footer class="lr-footer">
+  <div class="lr-footer__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 60V30C240 0 480 60 720 30C960 0 1200 60 1440 30V60H0Z" fill="#0F172A"/>
+    </svg>
+  </div>
+  <div class="lr-footer__body">
+    <div class="lr-footer__inner">
+        <div class="lr-footer__brand-col">
+            <a class="lr-footer__brand" routerLink="/" aria-label="LaptopRent Pro home">
+                <div class="lr-footer__brand-icon">
+                    <svg viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                        <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v8H4V6zm-2 9h20l-1.5 2.5A1 1 0 0119.5 18h-15a1 1 0 01-.866-.5L2 15z"/>
+                    </svg>
+                </div>
+                <span class="lr-footer__brand-name"> LaptopRent<span> Pro</span></span>
+            </a>
+            <p class="lr-footer__tagline">'s on-demand laptop rental platform. The device you need, delivered to your door.</p>
+            <div class="lr-footer__socials">
+                @for (social of socials; track social.label) {
+                    <a class="lr-footer__social-btn" [href]="social.href" [attr.aria-label]="social.label" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path [attr.d]="social.iconPath"/>
+                        </svg>
+                    </a>
+                }
+            </div>
+            <a class="lr-footer__contact-email" href="mailto:hello@laptoprentpro.in">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path d="M2.5 4.5h11a.5.5 0 01.5.5v6a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V5a.5.5 0 01.5-.5zM2.5 5l5.5 4 5.5-4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                hello&#64;laptoprentpro.in
+            </a>
+        </div>
+        <div class="lr-footer__link-col">
+            <h4 class="lr-footer__col-title">Explore</h4>
+            <ul class="lr-footer__link-list">
+                @for (link of exploreLinks; track link.label) {
+                    <li>
+                        <a class="lr-footer__link" [routerLink]="link.path">{{ link.label }}</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="lr-footer__link-col">
+            <h4 class="lr-footer__col-title">Categories</h4>
+            <ul class="lr-footer__link-list">
+                @for (cat of categoryLinks; track cat.label) {
+                    <li><a class="lr-footer__link" routerLink="/laptops" [queryParams]="{ category: cat.slug }">{{ cat.label }}</a></li>
+                }
+            </ul>
+        </div>
+        <div class="lr-footer__link-col">
+            <h4 class="lr-footer__col-title">Company</h4>
+            <ul class="lr-footer__link-list">
+                @for (link of companyLinks; track link.label) {
+                    <li><a class="lr-footer__link" [routerLink]="link.path">{{ link.label }}</a></li>
+                }
+            </ul>
+        </div>
+        <div class="lr-footer__newsletter-col">
+            <h4 class="lr-footer__col-title">Stay in the loop</h4>
+            <p class="lr-footer__newsletter-desc">New arrivals, deals and rental tips — straight to your inbox.</p>
+            <div class="lr-footer__newsletter-form">
+                <input class="lr-footer__newsletter-input" type="email" placeholder="your@email.com" [(ngModel)]="newsletterEmail" (keyup.enter)="subscribeNewsletter()" aria-label="Newsletter email">
+                <button class="lr-footer__newsletter-btn" type="button" (click)="subscribeNewsletter()" aria-label="Subscribe">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M3 8h10M8 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            @if (subscribed) {
+                <p class="lr-footer__newsletter-success">
+                    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.536 5.136a.75.75 0 00-1.072-1.05L7.08 9.099 5.47 7.49a.75.75 0 10-1.06 1.06l2.25 2.25a.75.75 0 001.08-.025l3.796-3.639z" clip-rule="evenodd"/>
+                    </svg>
+                    You're subscribed!
+                </p>
+            }
+        </div>
+    </div>
+  </div>
+  <div class="lr-footer__bottom">
+    <div class="lr-footer__bottom-inner">
+      <p class="lr-footer__copyright">&copy; {{ currentYear }} LaptopRent Pro. All rights reserved.</p>
+      <div class="lr-footer__bottom-links">
+        <a class="lr-footer__bottom-link" routerLink="/privacy">Privacy Policy</a>
+        <span class="lr-footer__bottom-dot" aria-hidden="true"></span>
+        <a class="lr-footer__bottom-link" routerLink="/terms">Terms of Service</a>
+        <span class="lr-footer__bottom-dot" aria-hidden="true"></span>
+        <a class="lr-footer__bottom-link" routerLink="/refund">Refund Policy</a>
+      </div>
+ 
+      <div class="lr-footer__payment-badges">
+        @for (badge of paymentBadges; track badge) {
+          <span class="lr-footer__payment-badge">{{ badge }}</span>
+        }
+      </div>
+    </div>
+  </div>
+</footer>

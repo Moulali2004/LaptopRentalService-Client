@@ -2081,3 +2081,382 @@
     transform: translateY(-1px);
   }
 }
+
+// ════════════════════════════════════════════════════════════
+// FOOTER  —  append this entire block to _global.scss
+// ════════════════════════════════════════════════════════════
+
+// ── Footer shell ──────────────────────────────────────────
+.lr-footer {
+  background: #0F172A;   // deep navy — richest neutral in the design
+  position: relative;
+}
+
+// ── Wave divider (sits above the dark footer) ─────────────
+.lr-footer__wave {
+  display: block;
+  line-height: 0;
+  margin-bottom: -1px;    // eliminates sub-pixel gap
+
+  svg {
+    width: 100%;
+    height: 60px;
+    display: block;
+  }
+}
+
+// ── Main body ─────────────────────────────────────────────
+.lr-footer__body {
+  padding: map-get($spacers, 9) 0 map-get($spacers, 8);  // 64px top, 48px bottom
+
+  @media (max-width: 768px) {
+    padding: map-get($spacers, 7) 0 map-get($spacers, 6);
+  }
+}
+
+.lr-footer__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 map-get($spacers, 5);
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1.4fr;  // brand + 3 link cols + newsletter
+  gap: map-get($spacers, 7);                         // 40px
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: map-get($spacers, 6);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    gap: map-get($spacers, 6) map-get($spacers, 5);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: map-get($spacers, 6);
+  }
+}
+
+// ── Brand column ──────────────────────────────────────────
+.lr-footer__brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 4);   // 16px
+
+  // Span full width on mid-breakpoint
+  @media (max-width: 1200px) {
+    grid-column: 1 / -1;      // full row on tablet
+  }
+
+  @media (max-width: 768px) {
+    grid-column: 1 / -1;
+  }
+}
+
+.lr-footer__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: map-get($spacers, 2);
+  text-decoration: none;
+  width: fit-content;
+  transition: opacity $transition-base;
+
+  &:hover { opacity: 0.8; }
+}
+
+.lr-footer__brand-icon {
+  width: 32px;
+  height: 32px;
+  background: $primary-600;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg { width: 18px; height: 18px; }
+}
+
+.lr-footer__brand-name {
+  font-family: $font-family-display;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+
+  span { font-weight: 400; color: rgba(255, 255, 255, 0.5); }
+}
+
+.lr-footer__tagline {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: $font-family-sans-serif;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 280px;
+}
+
+// ── Social buttons ────────────────────────────────────────
+.lr-footer__socials {
+  display: flex;
+  gap: map-get($spacers, 2);
+}
+
+.lr-footer__social-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition:
+    background $transition-base,
+    color $transition-base,
+    border-color $transition-base;
+
+  svg { width: 16px; height: 16px; }
+
+  &:hover {
+    background: $primary-600;
+    border-color: $primary-600;
+    color: #fff;
+  }
+}
+
+// ── Contact email ─────────────────────────────────────────
+.lr-footer__contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: $font-family-sans-serif;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  transition: color $transition-base;
+  width: fit-content;
+
+  svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  &:hover { color: $primary-400; }
+}
+
+// ── Link columns ──────────────────────────────────────────
+.lr-footer__link-col {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 4);
+}
+
+.lr-footer__col-title {
+  font-family: $font-family-display;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.lr-footer__link-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 2) + 2px;   // 10px
+}
+
+.lr-footer__link {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: $font-family-sans-serif;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  transition: color $transition-base;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &::before {
+    content: '';
+    width: 0;
+    height: 1px;
+    background: $primary-400;
+    transition: width $transition-base;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    color: #fff;
+
+    &::before { width: 10px; }
+  }
+}
+
+// ── Newsletter column ─────────────────────────────────────
+.lr-footer__newsletter-col {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 3);
+
+  @media (max-width: 1200px) {
+    grid-column: 1 / -1;
+    max-width: 360px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+  }
+}
+
+.lr-footer__newsletter-desc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.40);
+  font-family: $font-family-sans-serif;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.lr-footer__newsletter-form {
+  display: flex;
+  gap: map-get($spacers, 1) + 2px;   // 6px
+}
+
+.lr-footer__newsletter-input {
+  flex: 1;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(255, 255, 255, 0.10);
+  border-radius: $border-radius;
+  font-family: $font-family-sans-serif;
+  font-size: 14px;
+  color: #fff;
+  padding: 0 map-get($spacers, 3);
+  outline: none;
+  transition: border-color $transition-base, background $transition-base;
+
+  &::placeholder { color: rgba(255, 255, 255, 0.25); }
+
+  &:focus {
+    border-color: $primary-500;
+    background: rgba(255, 255, 255, 0.10);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.20);
+  }
+}
+
+.lr-footer__newsletter-btn {
+  width: 40px;
+  height: 40px;
+  background: $primary-600;
+  border: none;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: #fff;
+  transition: background $transition-base, transform $transition-spring;
+
+  svg { width: 14px; height: 14px; }
+
+  &:hover { background: $primary-500; }
+  &:active { transform: scale(0.93); }
+}
+
+.lr-footer__newsletter-success {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: $font-family-sans-serif;
+  color: $success-600;
+  margin: 0;
+  animation: lr-fade-up 0.3s ease both;
+
+  svg { width: 14px; height: 14px; flex-shrink: 0; }
+}
+
+// ── Bottom bar ────────────────────────────────────────────
+.lr-footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: map-get($spacers, 4) 0;
+}
+
+.lr-footer__bottom-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 map-get($spacers, 5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: map-get($spacers, 4);
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: map-get($spacers, 3);
+  }
+}
+
+.lr-footer__copyright {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.30);
+  font-family: $font-family-sans-serif;
+  margin: 0;
+}
+
+.lr-footer__bottom-links {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 3);
+  flex-wrap: wrap;
+}
+
+.lr-footer__bottom-link {
+  font-size: 13px;
+  font-weight: 400;
+  font-family: $font-family-sans-serif;
+  color: rgba(255, 255, 255, 0.30);
+  text-decoration: none;
+  transition: color $transition-base;
+
+  &:hover { color: rgba(255, 255, 255, 0.70); }
+}
+
+.lr-footer__bottom-dot {
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.20);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+// ── Payment badges ────────────────────────────────────────
+.lr-footer__payment-badges {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 1) + 2px;   // 6px
+  flex-wrap: wrap;
+}
+
+.lr-footer__payment-badge {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: $font-family-mono;
+  color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 4px;
+  padding: 3px 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
