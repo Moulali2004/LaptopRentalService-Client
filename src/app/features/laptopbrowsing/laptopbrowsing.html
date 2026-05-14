@@ -1,0 +1,320 @@
+<!-- LaptopRent Pro — BrowseLaptopsComponent -->
+
+<div class="lr-browse-page">
+
+  <!-- ── Page header ───────────────────────────────────── -->
+  <div class="lr-browse-header">
+    <div class="lr-browse-header__inner">
+      <div>
+        <h1 class="lr-browse-header__title">Browse Laptops</h1>
+        <p class="lr-browse-header__subtitle">
+          {{ filteredLaptops.length }} laptops available for rent
+        </p>
+      </div>
+
+      <div class="lr-browse-header__controls">
+        <!-- Sort dropdown -->
+        <select class="lr-browse-sort" [(ngModel)]="sortBy" (change)="applyFilters()">
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="newest">Newest First</option>
+        </select>
+
+        <!-- Mobile filter toggle -->
+        <button class="lr-filter-toggle-btn" type="button"
+                (click)="mobileFilterOpen = !mobileFilterOpen"
+                [class.lr-filter-toggle-btn--active]="mobileFilterOpen">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor"
+               stroke-width="1.7" aria-hidden="true">
+            <path d="M3 5h14M6 10h8M9 15h2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Filters
+          @if (activeFilterCount > 0) {
+            <span class="lr-filter-toggle-btn__badge">{{ activeFilterCount }}</span>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- Active filter chips row -->
+    @if (activeFilterCount > 0) {
+      <div class="lr-browse-header__chips">
+        @if (selectedCategory) {
+          <span class="lr-active-chip">
+            {{ selectedCategory | titlecase }}
+            <button type="button" (click)="selectedCategory=''; applyFilters()">
+              <svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+                <path d="M5 3.586L7.293 1.293a1 1 0 111.414 1.414L6.414 5l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414l-2.293 2.293A1 1 0 011.293 7.293L3.586 5 1.293 2.707A1 1 0 012.707 1.293L5 3.586z"/>
+              </svg>
+            </button>
+          </span>
+        }
+        @if (selectedRam) {
+          <span class="lr-active-chip">
+            {{ selectedRam }} RAM
+            <button type="button" (click)="selectedRam=''; applyFilters()">
+              <svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+                <path d="M5 3.586L7.293 1.293a1 1 0 111.414 1.414L6.414 5l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414l-2.293 2.293A1 1 0 011.293 7.293L3.586 5 1.293 2.707A1 1 0 012.707 1.293L5 3.586z"/>
+              </svg>
+            </button>
+          </span>
+        }
+        @if (selectedOs) {
+          <span class="lr-active-chip">
+            {{ selectedOs }}
+            <button type="button" (click)="selectedOs=''; applyFilters()">
+              <svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+                <path d="M5 3.586L7.293 1.293a1 1 0 111.414 1.414L6.414 5l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414l-2.293 2.293A1 1 0 011.293 7.293L3.586 5 1.293 2.707A1 1 0 012.707 1.293L5 3.586z"/>
+              </svg>
+            </button>
+          </span>
+        }
+        @if (priceRange[1] < maxPrice) {
+          <span class="lr-active-chip">
+            Up to ₹{{ priceRange[1] }}/day
+            <button type="button" (click)="priceRange=[minPrice,maxPrice]; applyFilters()">
+              <svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+                <path d="M5 3.586L7.293 1.293a1 1 0 111.414 1.414L6.414 5l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414l-2.293 2.293A1 1 0 011.293 7.293L3.586 5 1.293 2.707A1 1 0 012.707 1.293L5 3.586z"/>
+              </svg>
+            </button>
+          </span>
+        }
+        @if (availableOnly) {
+          <span class="lr-active-chip">
+            Available only
+            <button type="button" (click)="availableOnly=false; applyFilters()">
+              <svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+                <path d="M5 3.586L7.293 1.293a1 1 0 111.414 1.414L6.414 5l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414l-2.293 2.293A1 1 0 011.293 7.293L3.586 5 1.293 2.707A1 1 0 012.707 1.293L5 3.586z"/>
+              </svg>
+            </button>
+          </span>
+        }
+        <button class="lr-active-chips__clear" type="button" (click)="clearAllFilters()">
+          Clear all
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- ── Split layout ───────────────────────────────────── -->
+  <div class="lr-browse-layout">
+
+    <!-- ══ FILTER SIDEBAR ══════════════════════════════ -->
+    <aside class="lr-filters-sidebar"
+           [class.lr-filters-sidebar--open]="mobileFilterOpen">
+
+      <div class="lr-filters-sidebar__head">
+        <span class="lr-filters-sidebar__title">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="1.6" aria-hidden="true">
+            <path d="M2 4h12M4 8h8M6 12h4"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Filters
+        </span>
+        <button class="lr-filters-sidebar__reset"
+                type="button"
+                (click)="clearAllFilters()"
+                [disabled]="activeFilterCount === 0">
+          Reset
+        </button>
+      </div>
+
+      <!-- Category -->
+      <div class="lr-filter-group">
+        <h3 class="lr-filter-group__title">Category</h3>
+        <div class="lr-filter-group__list">
+          @for (cat of categoryOptions; track cat.slug) {
+            <label class="lr-filter-radio"
+                   [class.lr-filter-radio--active]="selectedCategory === cat.slug">
+              <input type="radio" name="category" [value]="cat.slug"
+                     [(ngModel)]="selectedCategory"
+                     (change)="applyFilters()"
+                     class="sr-only">
+              <span class="lr-filter-radio__dot"
+                    [style.background]="cat.color"></span>
+              <span class="lr-filter-radio__label">{{ cat.name }}</span>
+              <span class="lr-filter-radio__check" aria-hidden="true">
+                <svg viewBox="0 0 12 12" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10.28 2.28a.75.75 0 00-1.06 0L4.5 6.998 2.78 5.28a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.06 0l5.25-5.25a.75.75 0 000-1.06z"
+                    clip-rule="evenodd"/>
+                </svg>
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <div class="lr-filter-sep"></div>
+
+      <!-- Price range -->
+      <div class="lr-filter-group">
+        <h3 class="lr-filter-group__title">
+          Price per day
+          <span class="lr-filter-group__val">up to ₹{{ priceRange[1] }}</span>
+        </h3>
+        <div class="lr-filter-slider-wrap">
+          <input type="range"
+                 class="lr-range-slider"
+                 [min]="minPrice" [max]="maxPrice" [step]="50"
+                 [(ngModel)]="priceRange[1]"
+                 (input)="applyFilters()">
+          <div class="lr-range-slider__track-fill"
+               [style.width.%]="(priceRange[1] / maxPrice) * 100">
+          </div>
+          <div class="lr-range-slider__labels">
+            <span>₹{{ minPrice }}</span>
+            <span>₹{{ maxPrice }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lr-filter-sep"></div>
+
+      <!-- RAM -->
+      <div class="lr-filter-group">
+        <h3 class="lr-filter-group__title">RAM</h3>
+        <div class="lr-filter-group__tags">
+          @for (ram of ramOptions; track ram) {
+            <button class="lr-filter-tag" type="button"
+                    [class.lr-filter-tag--active]="selectedRam === ram"
+                    (click)="selectedRam = selectedRam === ram ? '' : ram; applyFilters()">
+              {{ ram }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="lr-filter-sep"></div>
+
+      <!-- Operating System -->
+      <div class="lr-filter-group">
+        <h3 class="lr-filter-group__title">Operating System</h3>
+        <div class="lr-filter-group__list">
+          @for (os of osOptions; track os) {
+            <label class="lr-filter-radio"
+                   [class.lr-filter-radio--active]="selectedOs === os">
+              <input type="radio" name="os" [value]="os"
+                     [(ngModel)]="selectedOs"
+                     (change)="applyFilters()"
+                     class="sr-only">
+              <span class="lr-filter-radio__label">{{ os }}</span>
+              <span class="lr-filter-radio__check" aria-hidden="true">
+                <svg viewBox="0 0 12 12" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10.28 2.28a.75.75 0 00-1.06 0L4.5 6.998 2.78 5.28a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.06 0l5.25-5.25a.75.75 0 000-1.06z"
+                    clip-rule="evenodd"/>
+                </svg>
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <div class="lr-filter-sep"></div>
+
+      <!-- Availability toggle -->
+      <div class="lr-filter-group">
+        <h3 class="lr-filter-group__title">Availability</h3>
+        <div class="lr-filter-toggle-row">
+          <span class="lr-filter-toggle-row__label">Available only</span>
+          <button class="lr-toggle" type="button"
+                  [class.lr-toggle--on]="availableOnly"
+                  (click)="availableOnly = !availableOnly; applyFilters()"
+                  role="switch"
+                  [attr.aria-checked]="availableOnly">
+            <span class="lr-toggle__thumb"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile: apply button -->
+      <button class="lr-filters-apply-btn" type="button"
+              (click)="mobileFilterOpen = false">
+        Show {{ filteredLaptops.length }} results
+      </button>
+
+    </aside>
+
+    <!-- Mobile backdrop -->
+    @if (mobileFilterOpen) {
+      <div class="lr-filters-backdrop"
+           (click)="mobileFilterOpen = false"
+           aria-hidden="true">
+      </div>
+    }
+
+    <!-- ══ LAPTOP LIST ══════════════════════════════════ -->
+    <main class="lr-browse-main">
+
+      <!-- Loading skeletons -->
+      @if (isLoading) {
+        <div class="lr-laptop-list">
+          @for (i of [1,2,3,4,5]; track i) {
+            <div class="lr-card-skeleton">
+              <div class="lr-skeleton lr-skeleton--gallery"></div>
+              <div class="lr-skeleton-body">
+                <div class="lr-skeleton lr-skeleton--line lr-skeleton--line-lg"></div>
+                <div class="lr-skeleton lr-skeleton--line lr-skeleton--line-sm"></div>
+                <div class="lr-skeleton lr-skeleton--line lr-skeleton--line-md"></div>
+                <div class="lr-skeleton lr-skeleton--tags-row">
+                  <div class="lr-skeleton lr-skeleton--tag"></div>
+                  <div class="lr-skeleton lr-skeleton--tag"></div>
+                  <div class="lr-skeleton lr-skeleton--tag"></div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Results -->
+      @else if (filteredLaptops.length > 0) {
+        <div class="lr-laptop-list">
+          @for (laptop of filteredLaptops; track laptop._id) {
+            <app-laptopcard [laptop]="laptop"></app-laptopcard>
+          }
+        </div>
+      }
+
+      <!-- Empty state -->
+      @else {
+        <div class="lr-browse-empty">
+          <div class="lr-browse-empty__icon">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor"
+                 stroke-width="1.4" aria-hidden="true">
+              <rect x="6" y="14" width="52" height="36" rx="4"/>
+              <path d="M6 40l14-14 10 10 10-10 18 18" stroke-linecap="round"/>
+              <circle cx="46" cy="24" r="6"/>
+              <path d="M22 56h20M32 50v6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="lr-browse-empty__title">No laptops match your filters</h3>
+          <p class="lr-browse-empty__desc">
+            Try broadening your search or clearing some filters.
+          </p>
+          <button class="lr-btn-hero-primary" type="button"
+                  (click)="clearAllFilters()">
+            Clear all filters
+          </button>
+        </div>
+      }
+
+    </main>
+
+  </div>
+</div>
+<!-- <div class="lr-laptop-list">
+    @if(activeLaptops && activeLaptops.length > 0) {
+        @for (laptop of activeLaptops; track laptop._id) {
+            <div>
+                <app-laptopcard [laptop]="laptop"></app-laptopcard>
+            </div>
+        }
+    } @else {
+        <p class="lr-no-laptops">Some laptops are currently unavailable.</p>
+    }
+</div> -->

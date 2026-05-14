@@ -6,7 +6,12 @@ export const routes: Routes = [
         path: '',
         component: Mainlayout,
         children: [
-            {path: '', loadComponent: () => import('./features/home/home').then(m => m.Home) },
+            {   path: '', loadComponent: () => import('./features/home/home').then(m => m.Home) },
+            { 
+                path: 'browse', 
+                loadComponent: () => import('./features/laptopbrowsing/laptopbrowsing').then(m => m.Laptopbrowsing),
+                canActivate: [() => import('./core/guards/auth-guard').then(m => m.authGuard)]
+            },
             {
                 path: 'dashboard',
                 loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard),

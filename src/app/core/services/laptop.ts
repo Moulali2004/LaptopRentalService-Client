@@ -14,7 +14,7 @@ export class Laptop {
 
   constructor(private http: HttpClient) {}
 
-  getActiveLaptops(): Observable<ActiveLaptop> {
-    return this.http.get<ActiveLaptop>(`${environment.backendApiUrl}/laptop/getActiveLaptops`);
+  getActiveLaptops(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.backendApiUrl}/laptop/getActiveLaptops`);
   }
 }

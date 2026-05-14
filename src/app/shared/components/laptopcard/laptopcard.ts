@@ -1,31 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Laptop } from '../../../core/services/laptop';
 import { ActiveLaptop } from '../../../models/laptop.models';
 import { CarouselModule  } from 'primeng/carousel'
-import { AuthRoutingModule } from "../../../features/auth/auth-routing-module";
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-laptopcard',
-  imports: [CarouselModule, AuthRoutingModule],
+  standalone: true,
+  imports: [CarouselModule, RouterModule, CommonModule],
   templateUrl: './laptopcard.html',
-  styleUrl: './laptopcard.scss',
+  styleUrls: ['./laptopcard.scss'],
 })
 export class Laptopcard {
-
-  public activeLaptops?: ActiveLaptop | null;
-  constructor(private lap: Laptop) {}
-  laptop?: ActiveLaptop | null;
-
-  //Shouldn't call here
-  // ngOnInit() {
-  //   this.lap.getActiveLaptops().subscribe({
-  //     next: (res: ActiveLaptop) => {
-  //       this.activeLaptops = res;
-  //       console.log(res);
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     }
-  //   })
-  // }
+  @Input() laptop!: ActiveLaptop;
+  constructor() {}
 }
