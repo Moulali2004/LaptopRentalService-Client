@@ -91,6 +91,16 @@
             </button>
           </span>
         }
+        @if (searchedBrand) {
+          <span class="lr-active-chip">
+            Brand: "{{ searchedBrand }}"
+            <button type="button" (click)="searchedBrand=''; applyFilters()">
+              <svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+                <path d="M5 3.586L7.293 1.293a1 1 0 111.414 1.414L6.414 5l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414l-2.293 2.293A1 1 0 011.293 7.293L3.586 5 1.293 2.707A1 1 0 012.707 1.293L5 3.586z"/>
+              </svg>
+            </button>
+          </span>
+        }
         <button class="lr-active-chips__clear" type="button" (click)="clearAllFilters()">
           Clear all
         </button>

@@ -83,7 +83,7 @@
         </div>
         <div class="lr-categories-grid">
             @for (cat of categories; track cat.slug) {
-                <a class="lr-category-card" [routerLink]="['/laptops']" [queryParams]="{ category: cat.slug }"
+                <a class="lr-category-card" [routerLink]="['/browse']" [queryParams]="{ category: cat.slug }"
                     [style.--cat-color]="cat.color" [style.--cat-bg]="cat.bg">
                     <div class="lr-category-card__icon-wrap">
                         <svg class="lr-category-card__icon" viewBox="0 0 48 48" fill="none" stroke="var(--cat-color)" stroke-width="1.6"
