@@ -3325,3 +3325,1015 @@
   margin: 0;
   max-width: 320px;
 }
+
+// ════════════════════════════════════════════════════════════
+// LAPTOP DETAIL PAGE  —  append entire block to _global.scss
+// Covers: breadcrumb, two-column layout, gallery, specs,
+//         add-ons, reviews, booking panel
+// ════════════════════════════════════════════════════════════
+
+// ── Page wrapper ──────────────────────────────────────────
+.lr-detail-page {
+  background: $neutral-50;
+  min-height: 100vh;
+}
+
+// ════════════════════════════════════════════════════════════
+// BREADCRUMB
+// ════════════════════════════════════════════════════════════
+
+.lr-detail-breadcrumb {
+  background: #fff;
+  border-bottom: 1px solid $neutral-200;
+}
+
+.lr-detail-breadcrumb__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: map-get($spacers, 3) map-get($spacers, 5);
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 2);
+  flex-wrap: wrap;
+
+  svg {
+    width: 10px;
+    height: 10px;
+    color: $neutral-400;
+    flex-shrink: 0;
+  }
+}
+
+.lr-breadcrumb-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: $neutral-500;
+  text-decoration: none;
+  font-family: $font-family-sans-serif;
+  transition: color $transition-base;
+
+  &:hover { color: $primary-600; }
+}
+
+.lr-breadcrumb-current {
+  font-size: 13px;
+  font-weight: 600;
+  color: $neutral-700;
+  font-family: $font-family-sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+
+// ════════════════════════════════════════════════════════════
+// TWO-COLUMN LAYOUT
+// ════════════════════════════════════════════════════════════
+
+.lr-detail-layout {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: map-get($spacers, 5);
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: map-get($spacers, 5);
+  align-items: start;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr 320px;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lr-detail-left {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 4);
+  min-width: 0;
+}
+
+.lr-detail-right {
+  // Sticky booking panel
+  position: sticky;
+  top: calc(#{$navbar-height} + map-get($spacers, 4));
+
+  @media (max-width: 900px) {
+    position: static;
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════
+// SHARED CARD SHELL (used by specs, add-ons, reviews)
+// ════════════════════════════════════════════════════════════
+
+.lr-detail-card {
+  background: #fff;
+  border: 1px solid $neutral-200;
+  border-radius: $border-radius-lg;
+  padding: map-get($spacers, 5);
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 4);
+}
+
+.lr-detail-card__title {
+  font-family: $font-family-display;
+  font-size: 16px;
+  font-weight: 600;
+  color: $neutral-800;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 2);
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: $primary-600;
+    flex-shrink: 0;
+  }
+}
+
+.lr-detail-card__badge {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: $font-family-sans-serif;
+  color: $primary-600;
+  background: $primary-50;
+  border: 1px solid $primary-100;
+  border-radius: $border-radius-pill;
+  padding: 2px 8px;
+  margin-left: auto;
+}
+
+
+// ════════════════════════════════════════════════════════════
+// IMAGE GALLERY
+// ════════════════════════════════════════════════════════════
+
+.lr-detail-gallery {
+  background: #fff;
+  border: 1px solid $neutral-200;
+  border-radius: $border-radius-lg;
+  padding: map-get($spacers, 4);
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 3);
+}
+
+.lr-detail-gallery__badges {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 2);
+}
+
+// Availability badge
+.lr-detail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: $font-family-sans-serif;
+  border-radius: $border-radius-pill;
+  padding: 3px 10px;
+
+  &--available {
+    background: rgba(22, 163, 74, 0.08);
+    color: $success-600;
+    border: 1px solid rgba(22, 163, 74, 0.18);
+  }
+
+  &--unavailable {
+    background: $danger-100;
+    color: $danger-600;
+    border: 1px solid rgba(220, 38, 38, 0.18);
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    background: $success-600;
+    border-radius: 50%;
+    animation: lr-pulse 2s ease infinite;
+  }
+}
+
+// Main image display
+.lr-detail-gallery__main {
+  position: relative;
+  background: $neutral-50;
+  border: 1px solid $neutral-100;
+  border-radius: $border-radius-lg;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &:hover .lr-detail-gallery__hint { opacity: 1; }
+}
+
+.lr-detail-gallery__img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  padding: map-get($spacers, 5);
+  transition: transform 350ms ease;
+
+  .lr-detail-gallery__main:hover & { transform: scale(1.03); }
+}
+
+.lr-detail-gallery__hint {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid $neutral-200;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $neutral-500;
+  opacity: 0;
+  transition: opacity $transition-base;
+  backdrop-filter: blur(4px);
+
+  svg { width: 14px; height: 14px; }
+}
+
+// Thumbnail strip
+.lr-detail-gallery__thumbs {
+  display: flex;
+  gap: map-get($spacers, 2);
+  flex-wrap: wrap;
+}
+
+.lr-detail-thumb {
+  width: 64px;
+  height: 64px;
+  background: $neutral-50;
+  border: 2px solid $neutral-200;
+  border-radius: $border-radius;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color $transition-base, box-shadow $transition-base;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+  }
+
+  &:hover { border-color: $primary-300; }
+
+  &--active {
+    border-color: $primary-600;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════
+// FULL SPECS TABLE
+// ════════════════════════════════════════════════════════════
+
+.lr-specs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid $neutral-100;
+  border-radius: $border-radius;
+  overflow: hidden;
+}
+
+.lr-spec-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: map-get($spacers, 4);
+  padding: map-get($spacers, 3) map-get($spacers, 4);
+  border-bottom: 1px solid $neutral-100;
+  transition: background $transition-base;
+
+  &:last-child { border-bottom: none; }
+  &:hover      { background: $neutral-50; }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+.lr-spec-row__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lr-spec-row__value {
+  font-size: 13px;
+  font-weight: 500;
+  color: $neutral-800;
+  font-family: $font-family-sans-serif;
+}
+
+
+// ════════════════════════════════════════════════════════════
+// ADD-ONS
+// ════════════════════════════════════════════════════════════
+
+.lr-addons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: map-get($spacers, 3);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lr-addon-card {
+  border: 1.5px solid $neutral-200;
+  border-radius: $border-radius-lg;
+  padding: map-get($spacers, 3) map-get($spacers, 4);
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 3);
+  cursor: pointer;
+  position: relative;
+  transition:
+    border-color $transition-base,
+    background $transition-base,
+    box-shadow $transition-base;
+
+  &:hover {
+    border-color: $primary-300;
+    background: $primary-50;
+  }
+
+  &--selected {
+    border-color: $primary-600;
+    background: $primary-50;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+
+    .lr-addon-card__check { opacity: 1; background: $primary-600; }
+    .lr-addon-card__icon  { color: $primary-600; }
+  }
+}
+
+.lr-addon-card__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  background: $neutral-200;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity $transition-base, background $transition-base;
+  flex-shrink: 0;
+
+  svg { width: 10px; height: 10px; color: #fff; }
+}
+
+.lr-addon-card__icon {
+  width: 36px;
+  height: 36px;
+  background: $neutral-100;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $neutral-500;
+  flex-shrink: 0;
+  transition: color $transition-base;
+
+  svg { width: 18px; height: 18px; }
+}
+
+.lr-addon-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.lr-addon-card__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: $neutral-800;
+  font-family: $font-family-sans-serif;
+}
+
+.lr-addon-card__desc {
+  font-size: 11px;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+  line-height: 1.4;
+}
+
+.lr-addon-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.lr-addon-card__price-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: $primary-600;
+  font-family: $font-family-display;
+}
+
+.lr-addon-card__price-unit {
+  font-size: 11px;
+  color: $primary-500;
+  font-family: $font-family-sans-serif;
+}
+
+
+// ════════════════════════════════════════════════════════════
+// REVIEWS
+// ════════════════════════════════════════════════════════════
+
+.lr-reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 6);
+  padding: map-get($spacers, 4);
+  background: $neutral-50;
+  border: 1px solid $neutral-100;
+  border-radius: $border-radius-lg;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: map-get($spacers, 3);
+  }
+}
+
+.lr-reviews-summary__score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.lr-reviews-summary__number {
+  font-family: $font-family-display;
+  font-size: 48px;
+  font-weight: 700;
+  color: $neutral-800;
+  line-height: 1;
+}
+
+.lr-reviews-summary__stars {
+  display: flex;
+  gap: 2px;
+  svg { width: 14px; height: 14px; }
+}
+
+.lr-reviews-summary__count {
+  font-size: 12px;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+}
+
+.lr-reviews-summary__bars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lr-rating-bar {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 2);
+}
+
+.lr-rating-bar__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.lr-rating-bar__track {
+  flex: 1;
+  height: 6px;
+  background: $neutral-200;
+  border-radius: $border-radius-pill;
+  overflow: hidden;
+}
+
+.lr-rating-bar__fill {
+  height: 100%;
+  background: #F59E0B;
+  border-radius: $border-radius-pill;
+  transition: width 0.6s ease;
+}
+
+.lr-rating-bar__count {
+  font-size: 12px;
+  color: $neutral-400;
+  font-family: $font-family-sans-serif;
+  width: 16px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.lr-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 4);
+}
+
+.lr-review-item {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 2);
+  padding-bottom: map-get($spacers, 4);
+  border-bottom: 1px solid $neutral-100;
+
+  &:last-child { border-bottom: none; padding-bottom: 0; }
+}
+
+.lr-review-item__header {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 3);
+}
+
+.lr-review-item__avatar {
+  width: 36px;
+  height: 36px;
+  background: $primary-100;
+  color: $primary-700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-display;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.lr-review-item__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+
+.lr-review-item__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: $neutral-800;
+  font-family: $font-family-sans-serif;
+}
+
+.lr-review-item__date {
+  font-size: 11px;
+  color: $neutral-400;
+  font-family: $font-family-sans-serif;
+}
+
+.lr-review-item__stars {
+  display: flex;
+  gap: 1px;
+  svg { width: 12px; height: 12px; }
+}
+
+.lr-review-item__text {
+  font-size: 14px;
+  color: $neutral-600;
+  font-family: $font-family-sans-serif;
+  line-height: 1.65;
+  margin: 0;
+}
+
+
+// ════════════════════════════════════════════════════════════
+// BOOKING PANEL (right sticky column)
+// ════════════════════════════════════════════════════════════
+
+.lr-booking-panel {
+  background: #fff;
+  border: 1px solid $neutral-200;
+  border-radius: $border-radius-lg;
+  padding: map-get($spacers, 5);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  box-shadow: $shadow-md;
+}
+
+.lr-booking-panel__sep {
+  height: 1px;
+  background: $neutral-100;
+  margin: map-get($spacers, 4) 0;
+}
+
+.lr-booking-panel__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lr-booking-panel__brand {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: $font-family-sans-serif;
+  color: $primary-600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.lr-booking-panel__name {
+  font-family: $font-family-display;
+  font-size: 20px;
+  font-weight: 700;
+  color: $neutral-800;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.lr-booking-panel__rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+
+  svg { width: 12px; height: 12px; }
+
+  span {
+    font-size: 12px;
+    color: $neutral-500;
+    font-family: $font-family-sans-serif;
+    margin-left: 2px;
+  }
+}
+
+.lr-booking-panel__pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lr-booking-panel__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.lr-booking-panel__price {
+  font-family: $font-family-display;
+  font-size: 32px;
+  font-weight: 700;
+  color: $primary-600;
+  line-height: 1;
+}
+
+.lr-booking-panel__price-unit {
+  font-size: 15px;
+  font-weight: 500;
+  color: $primary-500;
+  font-family: $font-family-sans-serif;
+}
+
+.lr-booking-panel__deposit-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+
+  svg { width: 13px; height: 13px; color: $neutral-400; flex-shrink: 0; }
+  strong { color: $neutral-700; font-weight: 600; }
+}
+
+.lr-booking-panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 3);
+}
+
+.lr-booking-panel__label {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: $font-family-sans-serif;
+  color: $neutral-500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+// Duration tabs
+.lr-duration-tabs {
+  display: flex;
+  gap: map-get($spacers, 1) + 2px;
+  flex-wrap: wrap;
+}
+
+.lr-duration-tab {
+  height: 30px;
+  padding: 0 10px;
+  background: $neutral-100;
+  border: 1.5px solid $neutral-200;
+  border-radius: $border-radius;
+  font-family: $font-family-sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: $neutral-600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background $transition-base,
+    border-color $transition-base,
+    color $transition-base;
+
+  &:hover {
+    background: $primary-50;
+    border-color: $primary-300;
+    color: $primary-700;
+  }
+
+  &--active {
+    background: $primary-600;
+    border-color: $primary-600;
+    color: #fff;
+    font-weight: 600;
+  }
+}
+
+.lr-booking-panel__days-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+
+  svg { width: 13px; height: 13px; color: $neutral-400; flex-shrink: 0; }
+}
+
+// Add-ons summary in panel
+.lr-booking-panel__addons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lr-booking-panel__addon-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: $neutral-600;
+  font-family: $font-family-sans-serif;
+}
+
+// Price breakdown table
+.lr-price-breakdown {
+  background: $neutral-50;
+  border: 1px solid $neutral-100;
+  border-radius: $border-radius;
+  padding: map-get($spacers, 3) map-get($spacers, 4);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lr-price-breakdown__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: $neutral-600;
+  font-family: $font-family-sans-serif;
+
+  &--total {
+    font-size: 15px;
+    font-weight: 700;
+    color: $neutral-800;
+    padding-top: 2px;
+  }
+}
+
+.lr-price-breakdown__sep {
+  height: 1px;
+  background: $neutral-200;
+  margin: 2px 0;
+}
+
+.lr-price-breakdown__note {
+  font-size: 11px;
+  color: $success-600;
+  font-family: $font-family-sans-serif;
+  margin: 2px 0 0;
+}
+
+// Delivery options
+.lr-delivery-options {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 2);
+}
+
+.lr-delivery-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: map-get($spacers, 3);
+  padding: map-get($spacers, 3) map-get($spacers, 3);
+  border: 1.5px solid $neutral-200;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition:
+    border-color $transition-base,
+    background $transition-base;
+
+  &:hover { border-color: $primary-300; background: $primary-50; }
+
+  &--active {
+    border-color: $primary-600;
+    background: $primary-50;
+  }
+}
+
+.lr-delivery-option__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.lr-delivery-option__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: $neutral-800;
+  font-family: $font-family-sans-serif;
+}
+
+.lr-delivery-option__time {
+  font-size: 11px;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+}
+
+.lr-delivery-option__price {
+  font-size: 13px;
+  font-weight: 600;
+  color: $primary-600;
+  font-family: $font-family-sans-serif;
+  flex-shrink: 0;
+}
+
+// CTA buttons
+.lr-booking-panel__ctas {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 2);
+  margin-top: map-get($spacers, 1);
+}
+
+.lr-booking-panel__btn-primary {
+  height: 46px;
+  width: 100%;
+  background: $primary-600;
+  border: none;
+  border-radius: $border-radius;
+  font-family: $font-family-sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: map-get($spacers, 2);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.30);
+  transition:
+    background $transition-base,
+    box-shadow $transition-base,
+    transform $transition-spring;
+
+  svg { width: 16px; height: 16px; }
+
+  &:hover:not(:disabled) {
+    background: $primary-700;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.40);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) { transform: scale(0.97); }
+
+  &:disabled {
+    background: $neutral-300;
+    color: $neutral-500;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+.lr-booking-panel__btn-ghost {
+  height: 40px;
+  width: 100%;
+  background: none;
+  border: 1.5px solid $neutral-300;
+  border-radius: $border-radius;
+  font-family: $font-family-sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: $neutral-600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: map-get($spacers, 2);
+  transition:
+    border-color $transition-base,
+    color $transition-base,
+    background $transition-base;
+
+  svg { width: 15px; height: 15px; }
+
+  &:hover {
+    border-color: $primary-400;
+    color: $primary-600;
+    background: $primary-50;
+  }
+}
+
+.lr-wishlist-saved { fill: $primary-600; stroke: $primary-600; }
+
+// Trust points
+.lr-booking-panel__trust {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: map-get($spacers, 3);
+  padding-top: map-get($spacers, 3);
+  border-top: 1px solid $neutral-100;
+}
+
+.lr-booking-panel__trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: $neutral-500;
+  font-family: $font-family-sans-serif;
+
+  svg { width: 13px; height: 13px; color: $success-600; flex-shrink: 0; }
+}
+
+
+// ════════════════════════════════════════════════════════════
+// DETAIL PAGE SKELETONS
+// ════════════════════════════════════════════════════════════
+
+.lr-detail-loading {
+  background: $neutral-50;
+  min-height: 100vh;
+}
+
+.lr-skeleton--detail-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: $border-radius-lg;
+  height: unset;
+}
+
+.lr-skeleton--detail-card {
+  width: 100%;
+  height: 220px;
+  border-radius: $border-radius-lg;
+}
+
+.lr-skeleton--detail-panel {
+  width: 100%;
+  height: 520px;
+  border-radius: $border-radius-lg;
+}

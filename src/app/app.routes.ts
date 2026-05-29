@@ -13,6 +13,11 @@ export const routes: Routes = [
                 canActivate: [() => import('./core/guards/auth-guard').then(m => m.authGuard)]
             },
             {
+                path: 'laptop-details/:id',
+                loadComponent: () => import('./features/laptop-detail/laptop-detail').then(m => m.LaptopDetail),
+                canActivate: [() => import('./core/guards/auth-guard').then(m => m.authGuard)]
+            },
+            {
                 path: 'dashboard',
                 loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard),
                 canActivate: [() => import('./core/guards/auth-guard').then(m => m.authGuard)]

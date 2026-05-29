@@ -7,6 +7,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { Laptopcard } from '../../shared/components/laptopcard/laptopcard';
 import { ActivatedRoute } from '@angular/router';
+import { LaptopResponse } from '../../models/laptop.models';
 
 @Component({
   selector: 'app-laptopbrowsing',
@@ -81,8 +82,8 @@ export class Laptopbrowsing implements OnInit {
     this.isLoading = true;
 
     this.laptopService.getActiveLaptops().subscribe({
-      next: (res: any) => {
-        this.activeLaptops = [...res.laptops.activeLaptops];
+      next: (res: LaptopResponse) => {
+        this.activeLaptops = [...res.activeLaptops];
         this.maxPrice = Math.max(...this.activeLaptops.map(l => l.pricePerDay));
         this.minPrice = Math.min(...this.activeLaptops.map(l => l.pricePerDay));
 
