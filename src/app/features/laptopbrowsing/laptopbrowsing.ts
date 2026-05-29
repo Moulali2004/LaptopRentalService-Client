@@ -6,6 +6,8 @@ import { ActiveLaptop } from '../../models/laptop.models';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { Laptopcard } from '../../shared/components/laptopcard/laptopcard';
+import { ActivatedRoute } from '@angular/router';
+import { LaptopResponse } from '../../models/laptop.models';
 
 @Component({
   selector: 'app-laptopbrowsing',
@@ -19,7 +21,11 @@ export class Laptopbrowsing implements OnInit {
   activeLaptops: any[] = [];
   filteredLaptops: ActiveLaptop[] = [];
 
-  constructor(private laptopService: Laptop, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private laptopService: Laptop,
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute
+  ) {}
 
   isLoading = true;
  
@@ -32,6 +38,7 @@ export class Laptopbrowsing implements OnInit {
   priceRange       = [0, 1000];
   maxPrice         = 1000;
   minPrice         = 0;
+  searchedBrand    = '';
  
   // ── Filter options ────────────────────────────────────
   categoryOptions = [
@@ -55,10 +62,19 @@ export class Laptopbrowsing implements OnInit {
     if (this.selectedOs)             count++;
     if (this.availableOnly)          count++;
     if (this.priceRange[1] < this.maxPrice) count++;
+    if(this.searchedBrand)           count++;
     return count;
   }
 
   ngOnInit() {
+    this.route.queryParamMap.subscribe(params => {
+      this.selectedCategory = params.get('category') || '';
+      this.searchedBrand    = params.get('search') || '';
+
+      if(this.selectedCategory || this.searchedBrand) {
+        this.applyFilters();
+      }
+    })
     this.loadLaptops();
   }
 
@@ -66,8 +82,8 @@ export class Laptopbrowsing implements OnInit {
     this.isLoading = true;
 
     this.laptopService.getActiveLaptops().subscribe({
-      next: (res: any) => {
-        this.activeLaptops = [...res.laptops.activeLaptops];
+      next: (res: LaptopResponse) => {
+        this.activeLaptops = [...res.activeLaptops];
         this.maxPrice = Math.max(...this.activeLaptops.map(l => l.pricePerDay));
         this.minPrice = Math.min(...this.activeLaptops.map(l => l.pricePerDay));
 
@@ -80,13 +96,6 @@ export class Laptopbrowsing implements OnInit {
         console.error(err);
       }
     });
- 
-    // Stub — remove when API is wired
-    // setTimeout(() => {
-    //   this.activeLaptops = [];
-    //   this.filteredLaptops = [];
-    //   this.isLoading = false;
-    // }, 800);
   }
 
   applyFilters(): void {
@@ -107,6 +116,10 @@ export class Laptopbrowsing implements OnInit {
     if (this.availableOnly) {
       result = result.filter(l => l.availableUnits > 0);
     }
+
+    if(this.searchedBrand) {
+      result = result.filter(l => l.brand.toLowerCase().includes(this.searchedBrand.toLowerCase()));
+    }
  
     result = result.filter(l => l.pricePerDay <= this.priceRange[1]);
  
@@ -122,6 +135,7 @@ export class Laptopbrowsing implements OnInit {
   }
 
   clearAllFilters(): void {
+    this.searchedBrand    = '';
     this.selectedCategory = '';
     this.selectedRam      = '';
     this.selectedOs       = '';

@@ -70,7 +70,7 @@ export class Navbar implements OnInit, OnDestroy {
 
   onSearch(): void {
     if (!this.searchQuery.trim()) return;
-    this.router.navigate(['/laptops'], { queryParams: { q: this.searchQuery.trim() } });
+    this.router.navigate(['/browse'], { queryParams: { search: this.searchQuery.trim() } });
     this.mobileSearchOpen = false;
   }
   toggleUserMenu(): void {

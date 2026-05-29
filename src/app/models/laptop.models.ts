@@ -8,6 +8,9 @@ export interface ActiveLaptop {
     category: string,
     images: string[],
     securityDeposit: number,
+    operatingSystem: string,
+    yearsOfUse: number,
+    totalUnits: number
 }
 
 export interface LapFeatures {
@@ -16,4 +19,12 @@ export interface LapFeatures {
     processor: string,
     screenSize: string,
     cpuModel: string,
+}
+
+export interface LaptopResponse {
+    activeLaptops: ActiveLaptop[]
+}
+
+export interface LaptopDetailsResponse {
+    laptop: ActiveLaptop
 }

@@ -85,7 +85,7 @@
                 ₹{{ laptop.securityDeposit }} deposit
             </div>
             <div class="lr-laptop-card__actions">
-                <button class="lr-laptop-card__btn-ghost" type="button" [routerLink]="['/laptop', laptop._id]">
+                <button class="lr-laptop-card__btn-ghost" type="button" [routerLink]="['/laptop-details', laptop._id]">
                     Details
                 </button>
                 <button class="lr-laptop-card__btn-primary" type="button" [disabled]="!laptop.availableUnits" [routerLink]="laptop.availableUnits ? ['/booking']: null" [queryParams]="{laptopId: laptop._id}">
