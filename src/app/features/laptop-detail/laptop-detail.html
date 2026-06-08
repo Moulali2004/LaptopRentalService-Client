@@ -140,10 +140,10 @@
                 <!-- Rating summary -->
                 <div class="lr-reviews-summary">
                     <div class="lr-reviews-summary__score">
-                        <span class="lr-reviews-summary__number">{{ 5 }}</span>
+                        <span class="lr-reviews-summary__number">{{ averageRating }}</span>
                         <div class="lr-reviews-summary__stars">
                             @for (star of [1,2,3,4,5]; track star) {
-                            <svg viewBox="0 0 16 16" [attr.fill]="star <= 5 ? '#F59E0B' : '#E2E8F0'" aria-hidden="true">
+                            <svg viewBox="0 0 16 16" [attr.fill]="star <= averageRating ? '#F59E0B' : '#E2E8F0'" aria-hidden="true">
                                 <path d="M8 1l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 10.8l-3.8 2 .7-4.3-3.1-3 4.3-.6L8 1z" />
                             </svg>
                             }
@@ -169,11 +169,11 @@
                     <div class="lr-review-item">
                         <div class="lr-review-item__header">
                             <div class="lr-review-item__avatar">
-                                {{ review.name.charAt(0).toUpperCase() }}
+                                {{ review.userId.fullname.charAt(0).toUpperCase() }}
                             </div>
                             <div class="lr-review-item__meta">
-                                <span class="lr-review-item__name">{{ review.name }}</span>
-                                <span class="lr-review-item__date">{{ review.date }}</span>
+                                <span class="lr-review-item__name">{{ review.userId.fullname }}</span>
+                                <span class="lr-review-item__date">{{ review.date | date:'shortDate' }}</span>
                             </div>
                             <div class="lr-review-item__stars">
                                 @for (star of [1,2,3,4,5]; track star) {

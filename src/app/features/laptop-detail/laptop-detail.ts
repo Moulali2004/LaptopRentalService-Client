@@ -5,6 +5,8 @@ import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule }         from '@angular/forms';
 // import { SlugifyPipe }         from '../../shared/pipes/slugify.pipe'; // adjust path
 import { CommonModule }        from '@angular/common';
+import { Reviews }             from '../../core/services/reviews';
+import { Review, ReviewsResponse }              from '../../models/review.models';
 
 interface AddOn {
   id:          string;
@@ -13,15 +15,6 @@ interface AddOn {
   pricePerDay: number;
   iconPath:    string;
 }
- 
-interface Review {
-  id:      string;
-  name:    string;
-  date:    string;
-  rating:  number;
-  comment: string;
-}
-
 
 @Component({
   selector: 'app-laptop-detail',
@@ -33,8 +26,10 @@ export class LaptopDetail implements OnInit {
 
   laptopId?: string;
   laptop?: ActiveLaptop;
+  reviews: Review[] = [];
   activeImage  = '';
   wishlisted   = false;
+  averageRating = 0;
 
   durationOptions = [
     { label: '1 Day',   value: 1   },
@@ -81,13 +76,7 @@ export class LaptopDetail implements OnInit {
   baseTotal   = 0;
   addonsTotal = 0;
   grandTotal  = 0;
- 
-  // ── Reviews ───────────────────────────────────────────
-  reviews: Review[] = [
-    { id: '1', name: 'Arjun Mehta',    date: 'May 2025',   rating: 5, comment: 'Absolutely seamless experience. The laptop arrived on time, was in perfect condition, and the return process was hassle-free. Will rent again!' },
-    { id: '2', name: 'Priya Sharma',   date: 'April 2025', rating: 4, comment: 'Great machine for my internship project. Battery life was excellent. Minor issue with delivery timing but support sorted it quickly.' },
-    { id: '3', name: 'Rohan Kulkarni', date: 'March 2025', rating: 5, comment: 'Used it for a gaming tournament. RTX performance was flawless. Damage insurance gave me peace of mind throughout.' },
-  ];
+
  
   get ratingBars() {
     return [5,4,3,2,1].map(stars => {
@@ -107,7 +96,8 @@ export class LaptopDetail implements OnInit {
     private laptopService: Laptop, 
     private route: ActivatedRoute, 
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private reviewsService: Reviews
   ) {}
 
   ngOnInit() {
@@ -115,12 +105,26 @@ export class LaptopDetail implements OnInit {
       this.laptopId = params['id'];
       if(this.laptopId) {
         this.loadLaptop();
+        this.loadReviews();
       }
     });
   }
 
+  loadReviews() {
+    // Placeholder for future API call to fetch reviews based on laptopId
+    this.reviewsService.getReviewsForLaptop(this.laptopId!).subscribe({
+      next: (res: ReviewsResponse) => {
+        this.reviews = res.reviews;
+        this.averageRating = this.reviews.reduce((sum, review) => sum + review.rating, 0) / this.reviews.length || 0;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching reviews:', err);
+      }
+    })
+  }
+
   loadLaptop() {
-    console.log('Loading laptop details for ID:', this.laptopId);
     this.laptopService.getLaptopById(this.laptopId!).subscribe({
       next: (res: LaptopDetailsResponse) => {
         this.laptop = res.laptop;
